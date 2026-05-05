@@ -1,7 +1,7 @@
 {
   "version": 2,
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "src": "/api/(.*)", "dest": "/vercel-deploy/api/$1" },
+    { "src": "/(.*)", "dest": "/vercel-deploy/index.html" }
   ]
 }
