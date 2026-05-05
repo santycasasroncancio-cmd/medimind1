@@ -1,0 +1,2586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Cross-browser compatibility -->
+  <meta name="format-detection" content="telephone=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MediMind">
+  <!-- Samsung, Huawei, Xiaomi -->
+  <meta name="HandheldFriendly" content="true">
+  <meta name="MobileOptimized" content="width">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MediMind">
+<meta name="description" content="MediMind™ — Tu asistente médico con IA. Aprende. Entiende. Sana.">
+<meta name="theme-color" content="#00C478">
+<meta name="msapplication-TileColor" content="#00C478">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- PWA Manifest -->
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<title>MediMind™</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+button{cursor:pointer;border:none;background:none;font-family:inherit;font-size:inherit;color:inherit}
+textarea,input,select{font-family:inherit;font-size:16px;-webkit-text-size-adjust:100%}
+*{-webkit-tap-highlight-color:transparent}
+img{display:block;max-width:100%}
+
+:root{color-scheme:dark;
+  --bg:#080808;--s1:#0f0f0f;--s2:#161616;--s3:#1e1e1e;--s4:#272727;
+  --bd:#232323;--bd2:#2f2f2f;
+  --em:#00C478;--em-d:rgba(0,196,120,0.10);--em-m:rgba(0,196,120,0.22);
+  --red:#CC3333;--red-d:rgba(204,51,51,0.10);
+  --amb:#F5A623;
+  --t1:#ffffff;--t2:#9a9a9a;--t3:#505050;
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'Geist',system-ui,sans-serif;
+  --r-s:10px;--r-m:16px;--r-l:22px;--r-xl:28px;
+  --sat:env(safe-area-inset-top,0px);
+  --sab:env(safe-area-inset-bottom,0px);
+  --gap:clamp(12px,3.5vw,20px);
+}
+
+html{font-family:var(--sans);background:var(--bg);color:var(--t1);font-size:14px;-webkit-font-smoothing:antialiased;overflow:hidden}
+body{display:flex;align-items:stretch;justify-content:center;height:100dvh;background:var(--bg)}
+@media(min-width:600px){body{align-items:center;background:#030303;padding:20px}}
+
+/* ── APP SHELL ───────────────────────── */
+.app{display:flex;flex-direction:column;width:100%;height:100dvh;background:var(--bg);overflow:hidden;position:relative}
+@media(min-width:600px){.app{max-width:480px;height:min(860px,94dvh);border-radius:28px;border:1px solid var(--bd2);box-shadow:0 32px 80px rgba(0,0,0,0.7)}}
+
+/* ── HEADER ─────────────────────────── */
+.header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:calc(var(--sat) + 13px) var(--gap) 11px;
+  border-bottom:1px solid var(--bd);
+  background:rgba(8,8,8,0.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);background:rgba(8,8,8,0.97);
+  flex-shrink:0;z-index:50;
+}
+.brand-row{display:flex;align-items:center;gap:9px}
+.brand-ico{
+  width:30px;height:30px;border-radius:8px;background:var(--em);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.brand-ico svg{width:16px;height:16px}
+.brand{font-family:var(--serif);font-size:clamp(1.05rem,4vw,1.3rem);color:var(--em);letter-spacing:-0.02em;line-height:1}
+.brand sup{font-size:0.46em;color:var(--t3);font-family:var(--sans);font-weight:300;vertical-align:super}
+.mode-pill{display:flex;align-items:center;gap:2px;background:var(--s2);border:1px solid var(--bd2);border-radius:99px;padding:3px}
+.mode-btn{background:none;border:none;border-radius:99px;padding:5px 9px;font-size:0.9rem;cursor:pointer;transition:background .12s;touch-action:manipulation;color:var(--t3)}
+.mode-btn.active{background:var(--em);color:#000}
+.mode-btn:not(.active):active{background:var(--s3)}
+
+/* ── TABS — premium bottom nav ──────── */
+.tabs{
+  display:flex;
+  border-top:1px solid rgba(255,255,255,0.08);
+  background:rgba(10,10,10,0.98);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  flex-shrink:0;
+  order:99;
+  padding-bottom:var(--sab);
+  padding-top:4px;
+  min-height:60px;
+}
+.tab-btn{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  padding:8px 2px 10px;
+  font-size:0.6rem;
+  font-weight:500;
+  color:rgba(255,255,255,0.4);
+  letter-spacing:0.02em;
+  border:none;
+  position:relative;
+  transition:color .15s;
+  white-space:nowrap;
+  background:none;
+  min-width:0;
+}
+.tab-btn .tb-ic{
+  font-size:1.6rem;
+  line-height:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  transition:transform .15s;
+}
+.tab-btn .tb-lbl{display:block;font-size:0.58rem;margin-top:0;text-align:center}
+.tab-btn.active{color:var(--em)}
+.tab-btn.active .tb-ic{transform:scale(1.15)}
+.tab-btn.active::before{
+  content:'';position:absolute;top:0;left:15%;right:15%;height:2px;
+  background:var(--em);border-radius:0 0 2px 2px;
+}
+.tab-premium.active .tb-ic{filter:drop-shadow(0 0 6px rgba(0,196,120,0.7))}
+/* Quitar botón toggle gris del chat */
+.chat-hist-btn-wrap{display:none}
+
+/* ── SCREENS — with bottom nav ──────── */
+.screen{display:none;flex-direction:column;flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;-ms-overflow-style:none;scrollbar-width:none;animation:fadeUp .22s ease}
+.screen.active{display:flex}
+.screen::-webkit-scrollbar{width:0}
+/* ── Performance ────────────────────────────────────────── */
+*{-webkit-tap-highlight-color:transparent}
+.app{will-change:auto}
+.screen{-webkit-overflow-scrolling:touch;transform:translateZ(0)}
+button,a{touch-action:manipulation}
+@keyframes fadeUp{from{opacity:0;transform:translate3d(0,6px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+
+/* ═══════════ SCAN ═══════════ */
+.scan-body{padding:var(--gap);display:flex;flex-direction:column;gap:var(--gap);padding-bottom:calc(var(--sab) + var(--gap))}
+
+.scan-zone{
+  border:1.5px dashed var(--bd2);border-radius:var(--r-xl);
+  min-height:clamp(180px,33vw,255px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;position:relative;overflow:hidden;background:var(--s1);
+  transition:border-color .2s,background .2s;flex-shrink:0;
+}
+.scan-zone:hover,.scan-zone.dov{border-color:var(--em);background:var(--em-d)}
+.scan-zone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:calc(var(--r-xl) - 1px)}
+.scan-zone.has .scan-ph{display:none}
+.scan-ph{display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;text-align:center;padding:var(--gap)}
+.scan-ph-ic{font-size:clamp(1.7rem,6vw,2.4rem)}
+.scan-ph-lbl{color:var(--t2);font-size:clamp(0.76rem,2.8vw,0.88rem)}
+.scan-ph-sub{color:var(--t3);font-size:clamp(0.64rem,2.2vw,0.72rem)}
+.img-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.88) 0%,transparent 55%);display:none;align-items:flex-end;padding:14px;border-radius:calc(var(--r-xl) - 1px)}
+.scan-zone.has .img-ov{display:flex}
+.img-ov-btns{display:flex;gap:8px}
+.img-ov-btn{padding:7px 13px;border-radius:99px;font-size:0.72rem;font-weight:500;background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);color:#fff;transition:background .15s}
+.img-ov-btn.del{background:var(--red-d);border-color:var(--red);color:var(--red)}
+
+.btn-row{display:flex;gap:10px}
+.btn-main{flex:1;background:var(--em);color:#000;font-weight:600;font-size:clamp(0.8rem,2.8vw,0.9rem);padding:clamp(12px,2.8vw,14px) 16px;border-radius:var(--r-l);transition:opacity .15s,transform .1s;box-shadow:0 0 24px rgba(0,196,120,0.18)}
+.btn-main:hover{opacity:.88}
+.btn-main:active{transform:scale(.97)}
+.btn-main:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}
+.btn-sec{flex:1;background:var(--s2);color:var(--t2);font-weight:500;font-size:clamp(0.8rem,2.8vw,0.9rem);padding:clamp(12px,2.8vw,14px) 16px;border-radius:var(--r-l);border:1px solid var(--bd2);transition:background .15s}
+.btn-sec:hover{background:var(--s3)}
+
+.scan-or{text-align:center;color:var(--t3);font-size:0.7rem;display:flex;align-items:center;gap:10px}
+.scan-or::before,.scan-or::after{content:'';flex:1;height:1px;background:var(--bd)}
+
+/* Result */
+.result-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-xl);overflow:hidden;animation:fadeUp .3s ease}
+.result-hero{padding:clamp(14px,3.5vw,20px);border-bottom:1px solid var(--bd)}
+.result-cond{font-family:var(--serif);font-size:clamp(1.1rem,4.5vw,1.5rem);line-height:1.25;margin-bottom:10px}
+.risk-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.risk-chip{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;font-size:0.72rem;font-weight:600;flex-shrink:0}
+.risk-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.risk-low{background:rgba(0,196,120,0.12);color:var(--em)}.risk-low .risk-dot{background:var(--em)}
+.risk-medium{background:rgba(245,166,35,0.12);color:var(--amb)}.risk-medium .risk-dot{background:var(--amb);animation:pd 1.5s ease-in-out infinite}
+.risk-high{background:var(--red-d);color:var(--red)}.risk-high .risk-dot{background:var(--red);animation:pd .8s ease-in-out infinite}
+@keyframes pd{0%,100%{transform:scale(1)}50%{transform:scale(1.5);opacity:.6}}
+.conf-wrap{flex:1;min-width:80px}
+.conf-lbl{font-size:0.63rem;color:var(--t3);margin-bottom:4px}
+.conf-bar{height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
+.conf-fill{height:100%;background:var(--em);border-radius:2px;transition:width .65s ease}
+.result-secs{display:flex;flex-direction:column}
+.rs{padding:clamp(12px,3vw,16px) clamp(14px,3.5vw,20px);border-bottom:1px solid var(--bd)}
+.rs:last-child{border-bottom:none}
+.rs-lbl{font-size:0.63rem;text-transform:uppercase;letter-spacing:.09em;color:var(--em);font-weight:600;margin-bottom:7px}
+.rs-body{font-size:clamp(0.78rem,2.6vw,0.86rem);line-height:1.65;color:var(--t2)}
+.rs-body strong{color:var(--t1);font-weight:600}
+.rs-item{display:flex;align-items:flex-start;gap:8px;font-size:clamp(0.78rem,2.6vw,0.86rem);line-height:1.55;color:var(--t2);margin-bottom:4px}
+.rs-item::before{content:'—';color:var(--em);flex-shrink:0}
+.disclaimer{background:rgba(245,166,35,0.05);border:1px solid rgba(245,166,35,0.18);border-radius:var(--r-s);padding:10px 14px;font-size:clamp(0.64rem,2.2vw,0.72rem);color:var(--t3);line-height:1.55}
+
+/* ═══════════ CHAT ═══════════ */
+/* ── Markdown rendering ─────────────────────────────────── */
+.md-h1{font-size:1rem;font-weight:700;color:var(--em);margin:8px 0 4px}
+.md-h2{font-size:0.9rem;font-weight:700;color:var(--em);margin:6px 0 3px}
+.md-h3{font-size:0.85rem;font-weight:600;color:var(--t1);margin:5px 0 2px}
+.md-li{padding:2px 0 2px 12px;position:relative;line-height:1.5}
+.md-li::before{content:'•';position:absolute;left:0;color:var(--em)}
+.md-num{color:var(--em);font-weight:600}
+.md-check{padding:2px 0 2px 12px;color:var(--t2)}
+.md-row{display:flex;gap:8px;padding:3px 0;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.md-row span{flex:1;min-width:60px;font-size:0.8rem}
+.chat-hist-bar{
+  position:absolute;left:0;top:0;bottom:0;width:80%;max-width:280px;
+  background:var(--s1);border-right:1px solid var(--bd);z-index:100;
+  display:flex;flex-direction:column;
+  transform:translateX(-100%);transition:transform .22s ease;
+}
+.chat-hist-bar.open{transform:translateX(0)}
+.chat-hist-overlay{display:none;position:absolute;inset:0;background:rgba(0,0,0,0.5);z-index:99}
+.chat-hist-overlay.open{display:block}
+.chb-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--bd)}
+.chb-title{font-size:0.85rem;font-weight:600;color:var(--t1)}
+.chb-close{background:none;border:none;color:var(--t3);font-size:1.1rem;padding:4px;cursor:pointer}
+.chb-list{flex:1;overflow-y:auto;padding:8px}
+.chb-item{padding:10px 12px;border-radius:10px;cursor:pointer;margin-bottom:4px;transition:background .12s}
+.chb-item:hover,.chb-item:active{background:var(--s2)}
+.chb-item-q{font-size:0.8rem;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.chb-item-meta{font-size:0.68rem;color:var(--t3)}
+.chb-empty{font-size:0.78rem;color:var(--t3);text-align:center;padding:24px 12px}
+.chb-new{margin:8px;padding:10px;border-radius:10px;border:1.5px dashed var(--bd2);background:none;color:var(--em);font-size:0.8rem;font-weight:600;cursor:pointer}
+.chat-hist-btn-wrap{padding:6px 12px 0;display:flex;justify-content:flex-start}
+.chat-hist-btn{background:var(--s2);border:1px solid var(--bd2);border-radius:20px;padding:5px 12px;font-size:0.75rem;color:var(--t2);cursor:pointer;touch-action:manipulation}
+#screen-chat{position:relative;overflow:hidden}
+.chat-wrap{display:flex;flex-direction:column;flex:1;height:100%;overflow:hidden}
+.chat-msgs{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:var(--gap);display:flex;flex-direction:column;gap:12px}
+.chat-msgs::-webkit-scrollbar{width:0}
+.empty-st{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:var(--gap)}
+.empty-ic{font-size:clamp(1.8rem,6.5vw,2.4rem);margin-bottom:4px}
+.empty-ttl{color:var(--t2);font-size:clamp(0.84rem,2.8vw,0.93rem);font-weight:500}
+.empty-sub{color:var(--t3);font-size:clamp(0.72rem,2.4vw,0.79rem);line-height:1.55;max-width:280px}
+.msg{display:flex;flex-direction:column;max-width:86%;gap:3px}
+.msg.user{align-self:flex-end;align-items:flex-end}
+.msg.ai{align-self:flex-start;align-items:flex-start}
+.msg-hdr{font-size:0.63rem;color:var(--t3);padding:0 4px}
+.bubble{padding:clamp(10px,2.8vw,13px) clamp(12px,3.2vw,16px);border-radius:20px;font-size:clamp(0.8rem,2.6vw,0.88rem);line-height:1.6;word-break:break-word}
+.msg.user .bubble{background:var(--em);color:#000;border-bottom-right-radius:5px;font-weight:500}
+.msg.ai .bubble{background:var(--s2);color:var(--t1);border:1px solid var(--bd2);border-bottom-left-radius:5px}
+.bubble p{margin-bottom:8px}.bubble p:last-child{margin-bottom:0}
+.bubble strong{color:var(--em)}.bubble em{color:var(--t2)}
+.msg-img{border-radius:14px;max-width:min(220px,65vw)}
+.typing-bbl{display:flex;gap:5px;align-items:center;padding:4px 0}
+.tdot{width:7px;height:7px;border-radius:50%;background:var(--em);animation:tb 1.1s ease-in-out infinite}
+.tdot:nth-child(2){animation-delay:.18s}.tdot:nth-child(3){animation-delay:.36s}
+@keyframes tb{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}}
+.quick-qs{display:flex;gap:8px;padding:0 var(--gap) 8px;overflow-x:auto;flex-shrink:0}
+.quick-qs::-webkit-scrollbar{display:none}
+.quick-q{flex-shrink:0;padding:7px 13px;border-radius:99px;background:var(--s2);border:1px solid var(--bd2);color:var(--t2);font-size:clamp(0.68rem,2.3vw,0.76rem);white-space:nowrap;transition:background .15s,color .15s,border-color .15s}
+.quick-q:hover{background:var(--em-d);border-color:var(--em);color:var(--em)}
+.chat-in-wrap{display:flex;align-items:flex-end;gap:8px;padding:10px var(--gap) calc(var(--sab) + 10px);border-top:1px solid var(--bd);background:var(--bg);flex-shrink:0}
+.chat-att{width:40px;height:40px;border-radius:11px;flex-shrink:0;background:var(--s2);border:1px solid var(--bd2);color:var(--t2);font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s}
+.chat-att:hover{background:var(--s3);color:var(--em)}
+.chat-ta{flex:1;background:var(--s1);border:1px solid var(--bd2);border-radius:15px;padding:10px 13px;color:var(--t1);resize:none;outline:none;max-height:110px;min-height:40px;line-height:1.45;font-size:clamp(0.8rem,2.6vw,0.88rem);transition:border-color .15s}
+.chat-ta:focus{border-color:var(--em)}
+.chat-ta::placeholder{color:var(--t3)}
+.send-btn{width:40px;height:40px;border-radius:11px;flex-shrink:0;background:var(--em);color:#000;font-size:0.95rem;font-weight:700;display:flex;align-items:center;justify-content:center;transition:opacity .15s}
+.send-btn:disabled{opacity:.28;cursor:not-allowed}
+.send-btn:hover:not(:disabled){opacity:.85}
+
+/* ═══════════ DONATE ═══════════ */
+.donate-body{padding:var(--gap);display:flex;flex-direction:column;gap:14px;padding-bottom:calc(var(--sab) + var(--gap))}
+
+.donate-hero{
+  background:linear-gradient(135deg,#0f1f18 0%,#081410 100%);
+  border:1px solid rgba(0,196,120,0.18);
+  border-radius:var(--r-xl);padding:24px 20px;text-align:center;
+}
+.donate-hero-ico{font-size:2.4rem;margin-bottom:10px}
+.donate-hero h2{font-family:var(--serif);font-size:clamp(1.2rem,5vw,1.5rem);color:var(--em);margin-bottom:6px}
+.donate-hero p{font-size:clamp(0.76rem,2.6vw,0.84rem);color:var(--t2);line-height:1.6}
+
+.amounts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.amt-btn{
+  background:var(--s2);border:1.5px solid var(--bd2);border-radius:var(--r-l);
+  padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;
+  transition:border-color .2s,background .2s;cursor:pointer;
+}
+.amt-btn.sel{border-color:var(--em);background:var(--em-d)}
+.amt-val{font-family:var(--serif);font-size:1.3rem;color:var(--t1)}
+.amt-btn.sel .amt-val{color:var(--em)}
+.amt-desc{font-size:0.7rem;color:var(--t3)}
+
+.custom-inp-wrap{
+  background:var(--s2);border:1.5px solid var(--bd2);border-radius:var(--r-l);
+  padding:12px 16px;display:flex;align-items:center;gap:8px;
+  transition:border-color .2s;
+}
+.custom-inp-wrap:focus-within,.custom-inp-wrap.sel{border-color:var(--em);background:var(--em-d)}
+.custom-sym{font-family:var(--serif);font-size:1.2rem;color:var(--t3)}
+.custom-inp{flex:1;background:none;border:none;outline:none;color:var(--t1);font-family:var(--serif);font-size:1.2rem}
+.custom-inp::placeholder{color:var(--t3)}
+
+/* Payment methods */
+.pay-methods{display:flex;flex-direction:column;gap:10px}
+
+.pay-native{
+  width:100%;padding:15px;border-radius:var(--r-l);
+  font-size:0.95rem;font-weight:600;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:opacity .15s,transform .1s;cursor:pointer;border:none;
+}
+.pay-native:active{transform:scale(.98)}
+.pay-apple{background:#fff;color:#000}
+.pay-google{background:#fff;color:#1a1a1a;border:1px solid #ddd}
+.pay-native svg{width:22px;height:22px}
+
+.pay-divider{display:flex;align-items:center;gap:10px;color:var(--t3);font-size:0.72rem}
+.pay-divider::before,.pay-divider::after{content:'';flex:1;height:1px;background:var(--bd)}
+
+/* --- Microinteracciones inputs --- */
+
+.pay-btn{
+  width:100%;padding:15px;border-radius:var(--r-l);
+  background:var(--em);color:#000;font-weight:700;font-size:0.95rem;
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 0 28px rgba(0,196,120,0.22);
+  transition:opacity .15s,transform .1s;
+}
+.pay-btn:hover{opacity:.88}.pay-btn:active{transform:scale(.98)}
+.pay-btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+
+.secure-badge{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--t3);font-size:0.7rem}
+
+/* Success */
+.donate-success{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:40px 24px;gap:14px;flex:1;
+}
+.donate-success .suc-ico{font-size:3.5rem}
+.donate-success h2{font-family:var(--serif);font-size:1.6rem;color:var(--em)}
+.donate-success p{color:var(--t2);font-size:0.88rem;line-height:1.65;max-width:280px}
+.donate-success .suc-name{color:var(--em);font-style:italic;font-family:var(--serif);font-size:1.1rem}
+
+/* ═══════════ ABOUT ═══════════ */
+.about-body{padding:var(--gap);display:flex;flex-direction:column;gap:12px;padding-bottom:calc(var(--sab) + var(--gap))}
+.about-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-l);padding:clamp(14px,3.5vw,18px) clamp(14px,3.5vw,20px)}
+.about-card h3{font-family:var(--serif);font-size:clamp(0.95rem,3.5vw,1.1rem);margin-bottom:8px}
+.about-card p{font-size:clamp(0.76rem,2.6vw,0.84rem);color:var(--t2);line-height:1.65}
+.about-card p strong{color:var(--t1)}
+.about-card p a{color:var(--em);text-decoration:none}
+.about-modes{display:flex;flex-direction:column;gap:9px;margin-top:10px}
+.about-mode{padding:11px 13px;border-radius:var(--r-s);border:1px solid var(--bd2)}
+.about-mode h4{font-size:clamp(0.76rem,2.6vw,0.83rem);font-weight:600;margin-bottom:3px}
+.about-mode p{font-size:clamp(0.68rem,2.3vw,0.75rem);color:var(--t3)}
+.about-mode.n h4{color:var(--em)}
+.about-mode.s h4{color:#457FFF}
+.about-mode.p h4{color:#9B59B6}
+
+/* Creator */
+.creator-card{
+  background:linear-gradient(135deg,#0e1c15 0%,#080808 100%);
+  border:1px solid var(--em);border-radius:var(--r-xl);
+  padding:clamp(16px,4vw,22px);
+  display:flex;align-items:center;gap:14px;
+}
+.creator-ava{
+  width:48px;height:48px;border-radius:14px;background:var(--em);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;flex-shrink:0;
+}
+.creator-info h4{font-size:0.65rem;text-transform:uppercase;letter-spacing:.09em;color:var(--em);font-weight:600;margin-bottom:4px}
+.creator-info p{font-family:var(--serif);font-size:clamp(1rem,3.8vw,1.15rem);color:var(--t1)}
+.creator-info span{font-size:0.72rem;color:var(--t3);display:block;margin-top:2px}
+
+/* ── SHARED ─────────────────────────── */
+.loader{position:fixed;top:0;left:0;right:0;height:2px;z-index:999;background:linear-gradient(90deg,var(--em),#00ffaa,var(--em));background-size:200% 100%;animation:shimmer 1.1s linear infinite;display:none}
+.loader.on{display:block}
+@keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.toast{position:fixed;bottom:calc(var(--sab) + 80px);left:50%;transform:translateX(-50%) translateY(70px);background:var(--s3);border:1px solid var(--bd2);color:var(--t1);padding:9px 20px;border-radius:99px;font-size:0.78rem;font-weight:500;z-index:999;transition:transform .28s ease;white-space:nowrap;pointer-events:none;max-width:calc(100vw - 40px);text-align:center}
+.toast.on{transform:translateX(-50%) translateY(0)}
+@media(max-width:359px){.mode-pill-lbl{display:none}.tab-btn{font-size:0.58rem}}
+
+/* ═══════════ NUEVOS: CONVERSIÓN + PAYPAL + WOMPI + MICROINTERACCIONES ═══════════ */
+
+/* --- Nudge post-análisis --- */
+.conversion-nudge{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  background:linear-gradient(135deg,#0e1c15 0%,#080f0b 100%);
+  border:1px solid rgba(0,196,120,0.25);border-radius:var(--r-xl);
+  padding:18px 16px;text-align:center;margin-top:2px;
+  animation:nudgeIn .4s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes nudgeIn{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.nudge-txt{font-size:0.82rem;color:var(--t2);}
+.nudge-btn{
+  background:var(--em);color:#000;font-weight:700;font-size:0.85rem;
+  padding:11px 22px;border-radius:var(--r-l);border:none;cursor:pointer;
+  display:flex;align-items:center;gap:7px;
+  box-shadow:0 0 20px rgba(0,196,120,0.3);
+  transition:opacity .15s,transform .12s,box-shadow .2s;
+}
+.nudge-btn:hover{opacity:.88;transform:scale(1.03);box-shadow:0 0 32px rgba(0,196,120,0.45)}
+.nudge-btn:active{transform:scale(.97)}
+
+/* --- Prueba social --- */
+.social-proof{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px 14px;border-radius:var(--r-l);
+  background:var(--s2);border:1px solid var(--bd2);
+}
+.sp-avatars{display:flex}
+.sp-ava{
+  width:26px;height:26px;border-radius:50%;border:2px solid var(--bg);
+  background:var(--em);display:flex;align-items:center;justify-content:center;
+  font-size:0.6rem;font-weight:700;color:#000;margin-left:-7px;
+}
+.sp-ava:first-child{margin-left:0}
+.sp-txt{font-size:0.75rem;color:var(--t2)}
+.sp-txt strong{color:var(--em)}
+
+/* --- COP amounts (montos en pesos colombianos) --- */
+.cop-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.cop-chip{
+  padding:7px 14px;border-radius:var(--r-l);
+  background:var(--s2);border:1.5px solid var(--bd2);
+  font-size:0.78rem;color:var(--t2);font-weight:500;cursor:pointer;
+  transition:all .18s;white-space:nowrap;
+}
+.cop-chip:hover{border-color:var(--em);color:var(--em);background:var(--em-d);transform:scale(1.04)}
+.cop-chip.sel{border-color:var(--em);color:var(--em);background:var(--em-d);box-shadow:0 0 14px rgba(0,196,120,0.2)}
+.cop-label{font-size:0.68rem;color:var(--t3);text-align:center}
+
+/* --- Glow en monto seleccionado --- */
+.amt-btn{transition:border-color .2s,background .2s,box-shadow .2s,transform .12s}
+.amt-btn.sel{
+  border-color:var(--em);background:var(--em-d);
+  box-shadow:0 0 16px rgba(0,196,120,0.25);
+  transform:scale(1.03);
+}
+.amt-btn:hover:not(.sel){transform:scale(1.02)}
+
+/* --- Texto dinámico de apoyo --- */
+.donate-support-txt{
+  text-align:center;font-size:0.8rem;color:var(--em);font-weight:500;
+  min-height:20px;transition:opacity .2s;
+}
+.donate-copy{text-align:center;font-size:0.76rem;color:var(--t3);line-height:1.5}
+
+/* --- PayPal button --- */
+.paypal-btn{
+  width:100%;padding:15px;border-radius:var(--r-l);
+  background:#FFC439;color:#000;font-weight:700;font-size:0.95rem;
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 0 24px rgba(255,196,57,0.25);
+  transition:opacity .15s,transform .12s,box-shadow .2s;
+}
+.paypal-btn:hover{opacity:.9;transform:scale(1.02);box-shadow:0 0 36px rgba(255,196,57,0.4)}
+.paypal-btn:active{transform:scale(.97)}
+.paypal-btn svg{width:20px;height:20px}
+
+/* --- Divider mejorado --- */
+
+/* --- Divider mejorado --- */
+.pay-section-lbl{
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--t3);font-weight:600;
+}
+
+/* --- Microinteracciones inputs --- */
+.chat-ta{transition:border-color .15s,box-shadow .15s}
+.chat-ta:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(0,196,120,0.08)}
+.scan-zone{transition:border-color .2s,background .2s,box-shadow .2s}
+.scan-zone:hover{box-shadow:0 0 0 3px rgba(0,196,120,0.1)}
+.btn-main{transition:opacity .15s,transform .1s,box-shadow .2s}
+.btn-main:hover:not(:disabled){box-shadow:0 0 32px rgba(0,196,120,0.32)}
+
+/* --- Gracias final --- */
+.thanks-footer{text-align:center;font-size:0.78rem;color:var(--t3);line-height:1.6;padding:8px 0 4px}
+.thanks-footer strong{color:var(--em)}
+
+/* ═══════════ PREMIUM ═══════════ */
+
+/* Tab premium highlight */
+.tab-premium{color:var(--em)!important;position:relative}
+.tab-premium::after{content:'';position:absolute;top:6px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--em);animation:gemPulse 2s ease-in-out infinite}
+@keyframes gemPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+
+.premium-body{
+  padding:var(--gap);display:flex;flex-direction:column;gap:14px;
+  padding-bottom:calc(var(--sab) + var(--gap));
+}
+
+/* Badge */
+.prem-badge-row{display:flex;justify-content:center;padding-top:4px}
+.prem-badge{
+  background:linear-gradient(135deg,#00C478,#00a060);
+  color:#000;font-size:0.72rem;font-weight:700;letter-spacing:.1em;
+  padding:5px 16px;border-radius:99px;
+  box-shadow:0 0 16px rgba(0,196,120,0.35);
+}
+
+/* Hero */
+.prem-hero{text-align:center;padding:4px 0}
+.prem-title{font-family:var(--serif);font-size:clamp(1.3rem,5vw,1.6rem);color:var(--t1);line-height:1.25;margin-bottom:8px}
+.prem-sub{font-size:clamp(0.78rem,2.8vw,0.86rem);color:var(--t2);line-height:1.6}
+
+/* Benefits */
+.prem-benefits{
+  background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-xl);
+  padding:clamp(14px,4vw,20px);display:flex;flex-direction:column;gap:11px;
+}
+.prem-benefit{display:flex;align-items:center;gap:12px}
+.pb-check{
+  width:22px;height:22px;border-radius:50%;background:var(--em-d);border:1.5px solid var(--em);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--em);font-size:0.72rem;font-weight:700;flex-shrink:0;
+}
+.pbc{background:var(--s2);border-color:var(--bd2);color:var(--t3)}
+.pb-txt{font-size:clamp(0.82rem,2.8vw,0.9rem);color:var(--t2);line-height:1.4}
+.pb-txt strong{color:var(--t1)}
+
+/* Price card */
+.prem-price-card{
+  background:linear-gradient(135deg,#0d1f16 0%,#071008 100%);
+  border:1.5px solid var(--em);border-radius:var(--r-xl);
+  padding:clamp(16px,4vw,22px);
+  box-shadow:0 0 24px rgba(0,196,120,0.15);
+}
+.ppc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.ppc-label{font-size:0.72rem;color:var(--t3);text-transform:uppercase;letter-spacing:.08em}
+.ppc-pop{
+  font-size:0.65rem;font-weight:700;letter-spacing:.06em;
+  background:var(--em);color:#000;padding:3px 10px;border-radius:99px;
+}
+.ppc-price{display:flex;align-items:baseline;gap:6px}
+.ppc-amount{
+  font-family:var(--serif);font-size:clamp(2rem,8vw,2.4rem);color:var(--em);line-height:1;
+}
+.ppc-period{font-size:0.82rem;color:var(--t2)}
+.ppc-note{font-size:0.72rem;color:var(--t3);margin-top:6px}
+
+/* CTA button */
+.prem-cta{
+  width:100%;padding:16px;border-radius:var(--r-l);
+  background:var(--em);color:#000;font-weight:700;font-size:1rem;
+  border:none;cursor:pointer;
+  box-shadow:0 0 28px rgba(0,196,120,0.35);
+  transition:opacity .15s,transform .12s,box-shadow .2s;
+  animation:ctaPulse 3s ease-in-out infinite;
+}
+.prem-cta:hover{opacity:.88;transform:scale(1.02);box-shadow:0 0 44px rgba(0,196,120,0.55);animation:none}
+.prem-cta:active{transform:scale(.97)}
+@keyframes ctaPulse{0%,100%{box-shadow:0 0 28px rgba(0,196,120,0.35)}50%{box-shadow:0 0 44px rgba(0,196,120,0.55)}}
+
+/* Compare table */
+.prem-compare{
+  background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-l);overflow:hidden;
+}
+.pc-row{
+  display:grid;grid-template-columns:1fr auto auto;
+  padding:10px 16px;border-bottom:1px solid var(--bd);gap:12px;align-items:center;
+}
+.pc-row:last-child{border-bottom:none}
+.pc-header{background:var(--s2);padding:8px 16px}
+.pc-col{text-align:center;font-size:clamp(0.75rem,2.5vw,0.82rem);color:var(--t2);min-width:56px}
+.pcc-em{color:var(--em);font-weight:700}
+.pc-feat{font-size:clamp(0.75rem,2.5vw,0.82rem);color:var(--t2)}
+.pc-header .pc-col{font-size:0.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);font-weight:600}
+.pc-header .pcc-em{color:var(--em)}
+
+/* Free status */
+.prem-free-status{
+  background:rgba(245,166,35,0.07);border:1px solid rgba(245,166,35,0.2);
+  border-radius:var(--r-m);padding:10px 14px;text-align:center;
+  font-size:clamp(0.74rem,2.6vw,0.8rem);color:var(--t2);
+}
+.prem-free-status strong{color:var(--amb)}
+
+/* Legal */
+.prem-legal{text-align:center;font-size:0.68rem;color:var(--t3);line-height:1.5;padding:0 8px}
+
+/* Paywall overlay */
+.paywall-block{
+  background:linear-gradient(to top,var(--bg) 0%,var(--bg) 55%,transparent 100%);
+  border:1px solid var(--bd);border-radius:var(--r-xl);
+  padding:24px 18px 20px;text-align:center;display:flex;flex-direction:column;gap:12px;
+  margin-top:4px;animation:fadeUp .35s ease;
+}
+.pw-lock{font-size:2rem}
+.pw-title{font-family:var(--serif);font-size:1.15rem;color:var(--t1)}
+.pw-sub{font-size:0.8rem;color:var(--t2);line-height:1.5}
+.pw-btn{
+  background:var(--em);color:#000;font-weight:700;font-size:0.9rem;
+  padding:13px 20px;border-radius:var(--r-l);border:none;cursor:pointer;
+  box-shadow:0 0 22px rgba(0,196,120,0.3);
+  transition:opacity .15s,transform .12s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.pw-btn:hover{opacity:.88;transform:scale(1.02)}
+.pw-free-note{font-size:0.72rem;color:var(--t3)}
+
+/* ═══════════ ACCOUNT / AUTH ═══════════ */
+
+#screen-account{overflow-y:auto;-webkit-overflow-scrolling:touch}
+.acc-view{min-height:100%;display:flex;flex-direction:column}
+.acc-body{
+  padding:var(--gap);display:flex;flex-direction:column;gap:16px;
+  padding-bottom:calc(var(--sab) + var(--gap));
+}
+
+/* Header */
+.acc-header{text-align:center;padding:12px 0 4px}
+.acc-logo{font-size:2.6rem;margin-bottom:8px}
+.acc-title{font-family:var(--serif);font-size:clamp(1.3rem,5vw,1.6rem);color:var(--t1);margin-bottom:6px}
+.acc-sub{font-size:clamp(0.76rem,2.6vw,0.84rem);color:var(--t2)}
+
+/* Form */
+.acc-form{display:flex;flex-direction:column;gap:12px}
+.acc-field{display:flex;flex-direction:column;gap:6px}
+.acc-label{font-size:0.74rem;color:var(--t2);font-weight:500}
+.acc-input{
+  background:var(--s2);border:1.5px solid var(--bd2);border-radius:var(--r-m);
+  padding:12px 14px;color:var(--t1);outline:none;font-size:0.9rem;
+  transition:border-color .15s,box-shadow .15s;
+}
+.acc-input:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(0,196,120,0.08)}
+.acc-input::placeholder{color:var(--t3)}
+.acc-pass-wrap{position:relative}
+.acc-pass-wrap .acc-input{width:100%;padding-right:44px}
+.acc-eye{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  background:none;border:none;font-size:1rem;cursor:pointer;color:var(--t3);
+  padding:4px;
+}
+
+.acc-err{
+  font-size:0.76rem;color:var(--red);min-height:16px;
+  padding:0 2px;animation:fadeUp .2s ease;
+}
+
+.acc-btn-main{
+  width:100%;padding:14px;border-radius:var(--r-l);
+  background:var(--em);color:#000;font-weight:700;font-size:0.92rem;
+  border:none;cursor:pointer;
+  box-shadow:0 0 22px rgba(0,196,120,0.25);
+  transition:opacity .15s,transform .12s;
+}
+.acc-btn-main:hover{opacity:.88}.acc-btn-main:active{transform:scale(.97)}
+.acc-btn-main:disabled{opacity:.4;cursor:not-allowed}
+
+.acc-divider{
+  text-align:center;color:var(--t3);font-size:0.72rem;
+  display:flex;align-items:center;gap:10px;
+}
+.acc-divider::before,.acc-divider::after{content:'';flex:1;height:1px;background:var(--bd)}
+
+.acc-btn-google{
+  width:100%;padding:13px;border-radius:var(--r-l);
+  background:var(--s2);color:var(--t1);font-weight:500;font-size:0.88rem;
+  border:1.5px solid var(--bd2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:background .15s,border-color .15s;
+}
+.acc-btn-google:hover{background:var(--s3);border-color:var(--bd2)}
+
+.acc-switch{
+  text-align:center;font-size:0.8rem;color:var(--t2);
+  display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;
+}
+.acc-switch button{color:var(--em);font-weight:600;font-size:0.8rem;background:none;border:none;cursor:pointer}
+
+/* Profile */
+.prof-card{
+  display:flex;align-items:center;gap:14px;
+  background:linear-gradient(135deg,#0d1f16,#070f0a);
+  border:1px solid var(--em);border-radius:var(--r-xl);
+  padding:clamp(14px,4vw,20px);
+}
+.prof-avatar{
+  width:52px;height:52px;border-radius:16px;
+  background:var(--em);color:#000;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;font-weight:700;flex-shrink:0;
+}
+.prof-info{display:flex;flex-direction:column;gap:3px}
+.prof-name{color:var(--t1);font-weight:600;font-size:clamp(0.9rem,3.5vw,1rem)}
+.prof-email{color:var(--t3);font-size:clamp(0.7rem,2.4vw,0.76rem)}
+.prof-badge{
+  margin-top:4px;font-size:0.68rem;font-weight:700;letter-spacing:.06em;
+  padding:3px 10px;border-radius:99px;align-self:flex-start;
+  background:var(--s3);color:var(--t3);border:1px solid var(--bd2);
+}
+.prof-badge.premium{background:var(--em-d);color:var(--em);border-color:var(--em)}
+
+/* Stats */
+.prof-stats{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;
+}
+.pstat{
+  background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-m);
+  padding:14px 10px;text-align:center;
+}
+.pstat-val{font-family:var(--serif);font-size:1.6rem;color:var(--em);line-height:1}
+.pstat-lbl{font-size:0.68rem;color:var(--t3);margin-top:4px}
+
+/* History */
+.hist-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2px;
+}
+.hist-title{font-size:0.8rem;font-weight:600;color:var(--t2)}
+.hist-clear{
+  font-size:0.72rem;color:var(--red);background:none;border:none;cursor:pointer;
+  padding:4px 8px;border-radius:var(--r-s);transition:background .15s;
+}
+.hist-clear:hover{background:var(--red-d)}
+
+.hist-list{
+  display:flex;flex-direction:column;gap:8px;
+  max-height:220px;overflow-y:auto;
+}
+.hist-list::-webkit-scrollbar{width:0}
+
+.hist-item{
+  background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-m);
+  padding:12px 14px;cursor:pointer;transition:border-color .15s,background .15s;
+  display:flex;flex-direction:column;gap:4px;
+}
+.hist-item:hover{border-color:var(--em);background:var(--em-d)}
+.hist-item-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.hist-item-txt{font-size:clamp(0.78rem,2.6vw,0.85rem);color:var(--t1);line-height:1.35;flex:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-item-time{font-size:0.66rem;color:var(--t3);flex-shrink:0}
+.hist-item-preview{font-size:0.74rem;color:var(--t2);line-height:1.4;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.hist-empty{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:24px 16px;text-align:center;
+  color:var(--t3);font-size:0.8rem;line-height:1.5;
+}
+
+/* Account action buttons */
+.acc-btn-premium{
+  width:100%;padding:13px;border-radius:var(--r-l);
+  background:var(--em-d);color:var(--em);font-weight:700;font-size:0.88rem;
+  border:1.5px solid var(--em);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:background .15s,transform .12s;
+}
+.acc-btn-premium:hover{background:var(--em-m)}
+.acc-btn-logout{
+  width:100%;padding:12px;border-radius:var(--r-l);
+  background:var(--s2);color:var(--t3);font-weight:500;font-size:0.85rem;
+  border:1px solid var(--bd2);cursor:pointer;
+  transition:background .15s,color .15s;
+}
+.acc-btn-logout:hover{background:var(--red-d);color:var(--red);border-color:var(--red)}
+
+/* Tab account icon */
+#tab-account-btn{font-size:1rem;min-width:36px}
+
+/* ═══════════ ABOUT — REDISEÑO COMPLETO ═══════════ */
+
+/* App hero */
+.ab-app-hero{
+  display:flex;align-items:center;gap:13px;
+  background:linear-gradient(135deg,#0d1f16,#070f0a);
+  border:1px solid var(--em);border-radius:var(--r-xl);
+  padding:clamp(16px,4vw,22px);
+}
+.ab-app-logo{
+  width:48px;height:48px;border-radius:14px;background:var(--em);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ab-app-name{
+  font-family:var(--serif);font-size:clamp(1.3rem,5vw,1.6rem);
+  color:var(--em);line-height:1;letter-spacing:-0.02em;
+}
+.ab-app-name sup{font-size:0.45em;color:var(--t3);font-family:var(--sans);font-weight:300;vertical-align:super}
+.ab-app-tag{font-size:0.72rem;color:var(--t3);margin-top:4px;letter-spacing:0.04em}
+
+.ab-version-row{display:flex;flex-wrap:wrap;gap:7px}
+.ab-chip{
+  font-size:0.68rem;font-weight:500;padding:4px 11px;border-radius:99px;
+  background:var(--s2);border:1px solid var(--bd2);color:var(--t3);
+}
+
+/* Section label */
+.ab-section-lbl{
+  font-size:0.68rem;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--t3);font-weight:600;padding:0 2px;margin-top:4px;
+}
+
+/* Creator */
+.ab-creator{
+  display:flex;align-items:center;gap:14px;
+  background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-l);
+  padding:clamp(14px,4vw,18px);
+}
+.ab-creator-ava{
+  width:50px;height:50px;border-radius:14px;background:var(--em);
+  color:#000;font-weight:700;font-size:1.2rem;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ab-creator-name{color:var(--t1);font-weight:600;font-size:clamp(0.88rem,3vw,0.98rem);margin-bottom:3px}
+.ab-creator-role{font-size:0.75rem;color:var(--t2);margin-bottom:3px}
+.ab-creator-loc{font-size:0.72rem;color:var(--t3)}
+
+.ab-creator-links{display:flex;flex-wrap:wrap;gap:8px}
+.ab-link-chip{
+  font-size:0.76rem;padding:7px 14px;border-radius:99px;
+  background:var(--s2);border:1px solid var(--bd2);color:var(--em);
+  text-decoration:none;transition:background .15s,border-color .15s;
+}
+.ab-link-chip:hover{background:var(--em-d)}
+
+/* Features */
+.ab-feature-list{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.ab-feat{display:flex;align-items:center;gap:10px;font-size:clamp(0.78rem,2.6vw,0.86rem);color:var(--t2)}
+.ab-feat-ic{font-size:1rem;flex-shrink:0;width:22px;text-align:center}
+
+/* Tech grid */
+.ab-tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ab-tech-item{background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r-s);padding:11px 12px}
+.ab-tech-name{font-size:0.76rem;font-weight:600;color:var(--t1);margin-bottom:3px}
+.ab-tech-desc{font-size:0.68rem;color:var(--t3);line-height:1.4}
+
+/* Plan comparison */
+.ab-plan-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ab-plan{
+  background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r-m);
+  padding:14px 12px;display:flex;flex-direction:column;gap:8px;
+}
+.ab-plan-prem{border-color:var(--em);background:var(--em-d)}
+.ab-plan-name{font-size:0.82rem;font-weight:700;color:var(--t1)}
+.prem-color{color:var(--em)}
+.ab-plan-price{font-size:0.72rem;color:var(--em);font-weight:600}
+.ab-plan-items{display:flex;flex-direction:column;gap:5px}
+.ab-plan-items span{font-size:0.72rem;color:var(--t2);line-height:1.3}
+
+/* Privacy */
+.ab-privacy-list{display:flex;flex-direction:column;gap:10px}
+.ab-priv-item{display:flex;align-items:flex-start;gap:10px;font-size:clamp(0.76rem,2.6vw,0.83rem);color:var(--t2);line-height:1.5}
+.ab-priv-ic{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;flex-shrink:0;margin-top:1px}
+.ab-priv-ic.ok{background:rgba(0,196,120,0.12);color:var(--em);border:1px solid rgba(0,196,120,0.3)}
+.ab-priv-item strong{color:var(--t1)}
+
+/* Terms */
+.ab-terms p{font-size:clamp(0.76rem,2.5vw,0.82rem);color:var(--t2);margin-bottom:10px}
+.ab-terms-list{display:flex;flex-direction:column;gap:7px}
+.ab-terms-item{font-size:clamp(0.72rem,2.4vw,0.79rem);color:var(--t2);line-height:1.55;padding-left:4px}
+.ab-terms-item strong{color:var(--t1)}
+
+/* Disclaimer */
+.ab-disclaimer{
+  display:flex;align-items:flex-start;gap:12px;
+  background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.25);
+  border-radius:var(--r-l);padding:clamp(14px,4vw,18px);
+  font-size:clamp(0.76rem,2.6vw,0.83rem);color:var(--t2);line-height:1.6;
+}
+.ab-disclaimer-icon{font-size:1.4rem;flex-shrink:0;margin-top:1px}
+.ab-disclaimer strong{color:var(--t1)}
+
+/* Emergencies */
+.ab-emergency-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ab-emerg-item{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-m);
+  padding:13px 14px;gap:8px;
+}
+.ab-emerg-flag{font-size:1.2rem}
+.ab-emerg-name{flex:1;font-size:0.78rem;color:var(--t2)}
+.ab-emerg-num{font-family:var(--serif);font-size:1.1rem;color:var(--red);font-weight:700}
+
+/* Contact */
+.ab-contact-list{display:flex;flex-direction:column;gap:8px}
+.ab-contact-item{
+  display:flex;align-items:center;gap:12px;
+  background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-m);
+  padding:clamp(12px,3vw,15px) 14px;text-decoration:none;
+  transition:border-color .15s,background .15s;
+}
+.ab-contact-item:hover{border-color:var(--em);background:var(--em-d)}
+.ab-contact-ic{font-size:1.3rem;flex-shrink:0}
+.ab-contact-lbl{font-size:0.68rem;color:var(--t3);margin-bottom:2px}
+.ab-contact-val{font-size:clamp(0.78rem,2.6vw,0.85rem);color:var(--t1);font-weight:500}
+
+/* Footer */
+.ab-footer{
+  text-align:center;padding:16px 0 8px;display:flex;flex-direction:column;gap:5px;
+  border-top:1px solid var(--bd);margin-top:4px;
+}
+.ab-footer-logo{font-family:var(--serif);font-size:1.2rem;color:var(--em)}
+.ab-footer-logo sup{font-size:0.45em;color:var(--t3);font-family:var(--sans);vertical-align:super}
+.ab-footer-copy{font-size:0.72rem;color:var(--t3)}
+.ab-footer-ver{font-size:0.68rem;color:var(--t3);margin-top:2px}
+
+/* ── Secure badge + copy ── */
+.prem-secure{text-align:center;font-size:0.72rem;color:var(--t3);margin-top:-6px}
+.prem-copy-bottom{
+  text-align:center;font-size:0.8rem;color:var(--t2);font-style:italic;
+  padding:4px 16px;line-height:1.5;
+}
+
+/* ── Prueba social premium ── */
+.prem-social{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:8px 14px;background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r-l);
+}
+.prem-social-avatars{display:flex}
+.psa{
+  width:26px;height:26px;border-radius:50%;border:2px solid var(--bg);
+  background:var(--em);display:flex;align-items:center;justify-content:center;
+  font-size:0.6rem;font-weight:700;color:#000;margin-left:-7px;flex-shrink:0;
+}
+.psa:first-child{margin-left:0}
+.prem-social-txt{font-size:0.75rem;color:var(--t2)}
+.prem-social-txt strong{color:var(--em)}
+
+</style>
+<!-- PayPal SDK — solo una vez -->
+<!-- Firebase se carga al final del body para no bloquear la app -->
+
+</head>
+<body>
+<div class="loader" id="loader"></div>
+<div class="toast"  id="toast"></div>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="brand-row">
+      <img src="/icons/icon-192x192.png" style="width:38px;height:38px;border-radius:10px;object-fit:contain;background:transparent;" alt="MediMind">
+      <div class="brand">MediMind<sup>™</sup></div>
+    </div>
+    <!-- Modos: solo visibles en Chat y Escáner -->
+    <div class="mode-pill" id="modePill" style="display:none">
+      <span id="modeLbl" style="font-size:0.68rem;color:var(--em);font-weight:600;white-space:nowrap;padding:0 4px 0 2px">👤 Normal</span>
+      <div style="width:1px;height:14px;background:var(--bd2);margin:0 2px"></div>
+      <button class="mode-btn active" id="modeNormal" onclick="setMode('normal',this)" title="Normal">👤</button>
+      <button class="mode-btn" id="modeEstudiante" onclick="setMode('estudiante',this)" title="Estudiante">🎓</button>
+      <button class="mode-btn" id="modeProfesional" onclick="setMode('profesional',this)" title="Profesional">🩺</button>
+    </div>
+    <select id="modeSel" style="display:none">
+      <option value="normal">normal</option>
+      <option value="estudiante">estudiante</option>
+      <option value="profesional">profesional</option>
+    </select>
+  </header>
+
+  <!-- BOTTOM NAV -->
+  <nav class="tabs">
+    <button class="tab-btn active" onclick="goTab('scan',this)">
+      <span class="tb-ic">📸</span><span class="tb-lbl">Escáner</span>
+    </button>
+    <button class="tab-btn" onclick="goTab('chat',this)">
+      <span class="tb-ic">💬</span><span class="tb-lbl">Chat IA</span>
+    </button>
+    <button class="tab-btn tab-premium" onclick="goTab('premium',this)">
+      <span class="tb-ic">💎</span><span class="tb-lbl">Premium</span>
+    </button>
+    <button class="tab-btn" onclick="goTab('donate',this)">
+      <span class="tb-ic">❤️</span><span class="tb-lbl">Donar</span>
+    </button>
+    <button class="tab-btn" onclick="goTab('about',this)">
+      <span class="tb-ic">ℹ️</span><span class="tb-lbl">Info</span>
+    </button>
+    <button class="tab-btn" id="tab-account-btn" onclick="goTab('account',this)">
+      <span class="tb-ic">👤</span><span class="tb-lbl" id="tab-account-lbl">Cuenta</span>
+    </button>
+  </nav>
+
+  <!-- ═══ SCAN ═══ -->
+  <section class="screen active" id="screen-scan">
+    <div class="scan-body">
+      <!-- Logo hero centrado -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0 4px;">
+        <img src="/icons/icon-192x192.png"
+          style="width:88px;height:88px;border-radius:22px;object-fit:contain;
+                 filter:drop-shadow(0 0 18px rgba(0,196,120,0.45));
+                 background:transparent;"
+          alt="MediMind">
+        <div style="font-family:'Instrument Serif',Georgia,serif;font-size:1.5rem;color:#00C478;letter-spacing:-0.02em;line-height:1;">
+          MediMind<sup style="font-size:0.45em;color:#505050;font-family:system-ui,sans-serif;font-weight:300;vertical-align:super">™</sup>
+        </div>
+        <div style="font-size:0.72rem;color:#505050;letter-spacing:0.04em;">Aprende · Entiende · Sana</div>
+      </div>
+      <input type="file" id="fi" accept="image/jpeg,image/png,image/webp,image/gif,image/*"  style="display:none">
+      <div class="scan-zone" id="sz" onclick="pickFile()">
+        <div class="scan-ph">
+          <div class="scan-ph-ic">📷</div>
+          <div class="scan-ph-lbl">Toca para subir una foto</div>
+          <div class="scan-ph-sub">JPG · PNG · WEBP · o arrastra aquí</div>
+        </div>
+        <div class="img-ov">
+          <div class="img-ov-btns">
+            <button class="img-ov-btn" onclick="event.stopPropagation();pickFile()">Cambiar</button>
+            <button class="img-ov-btn del" onclick="event.stopPropagation();clearImg()">✕</button>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-main" id="aBtn" onclick="doAnalyze()" disabled>Analizar con IA →</button>
+      </div>
+      <div class="scan-or">o describe tu síntoma</div>
+      <div class="btn-row">
+        <button class="btn-sec" onclick="goDescribe()">📝 Ir al chat</button>
+      </div>
+      <div id="scanResult"></div>
+    </div>
+  </section>
+
+  <!-- ═══ CHAT ═══ -->
+  <section class="screen" id="screen-chat">
+    <!-- Barra de historial de chats -->
+    <div class="chat-hist-bar" id="chatHistBar">
+      <div class="chb-header">
+        <span class="chb-title">💬 Chats recientes</span>
+        <button class="chb-close" onclick="toggleHistBar(false)">✕</button>
+      </div>
+      <div class="chb-list" id="chbList">
+        <div class="chb-empty">Inicia sesión para ver tu historial</div>
+      </div>
+      <button class="chb-new" onclick="newChat();toggleHistBar(false)">+ Nuevo chat</button>
+    </div>
+    <!-- Overlay -->
+    <div class="chat-hist-overlay" id="chatHistOverlay" onclick="toggleHistBar(false)"></div>
+
+    <div class="chat-wrap">
+      <!-- Botón para abrir historial -->
+      <div class="chat-hist-btn-wrap">
+        <button class="chat-hist-btn" onclick="toggleHistBar(true)" title="Historial">
+          🕐 <span id="chatHistCount"></span>
+        </button>
+      </div>
+      <div class="chat-msgs" id="cMsgs">
+        <div class="empty-st">
+          <div class="empty-ic">🩺</div>
+          <div class="empty-ttl">Dr. MediMind™ listo</div>
+          <div class="empty-sub">Cuéntame tus síntomas o haz cualquier pregunta. Adjunta fotos con 📎</div>
+        </div>
+      </div>
+      <div class="quick-qs" id="qqs">
+        <button class="quick-q" onclick="sendQ(this)">¿Cuándo ir a urgencias?</button>
+        <button class="quick-q" onclick="sendQ(this)">Me duele la cabeza</button>
+        <button class="quick-q" onclick="sendQ(this)">Fiebre hace 3 días</button>
+        <button class="quick-q" onclick="sendQ(this)">Dolor en el pecho</button>
+        <button class="quick-q" onclick="sendQ(this)">Sarpullido en la piel</button>
+        <button class="quick-q" onclick="sendQ(this)">¿Qué es la hipertensión?</button>
+      </div>
+      <div class="chat-in-wrap">
+        <input type="file" id="cf" accept="image/jpeg,image/png,image/webp,image/gif,image/*"  style="display:none">
+        <button class="chat-att" onclick="document.getElementById('cf').click()">📎</button>
+        <textarea class="chat-ta" id="cTa" placeholder="Describe tus síntomas..." rows="1"
+          onkeydown="cKey(event)" oninput="resize(this)"></textarea>
+        <button class="send-btn" id="sBtn" onclick="sendChat()" disabled>↑</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ DONATE ═══ -->
+  <section class="screen" id="screen-donate">
+    <div class="donate-body" id="donateBody">
+
+      <div class="donate-hero">
+        <div class="donate-hero-ico">❤️</div>
+        <h2>Apoya MediMind™</h2>
+        <p>Tu apoyo nos ayuda a seguir desarrollando esta app y ayudar a más personas. Esta app es y siempre será gratuita.</p>
+      </div>
+
+      <div class="social-proof">
+        <div class="sp-avatars">
+          <div class="sp-ava">DS</div>
+          <div class="sp-ava" style="background:#457FFF;color:#fff">MR</div>
+          <div class="sp-ava" style="background:#9B59B6;color:#fff">AL</div>
+          <div class="sp-ava" style="background:var(--amb);color:#000">JC</div>
+        </div>
+        <span class="sp-txt"><strong>+1.000 personas</strong> ya usan MediMind™</span>
+      </div>
+
+      <button class="paypal-btn" onclick="window.open('https://checkout.wompi.co/l/oxXemt','_blank')" style="background:linear-gradient(135deg,#00C478,#00a864);border:none;color:#000;font-weight:700;box-shadow:0 4px 20px rgba(0,196,120,0.4)">
+        <span style="font-size:1.1rem">❤️</span>
+        Donar con PSE / Tarjeta
+      </button>
+
+      <div class="donate-copy">Tu apoyo mantiene MediMind™ gratis para todos 🙌</div>
+
+      <div class="thanks-footer">
+        <strong>Gracias por apoyar MediMind™</strong><br>
+        Cada donación nos acerca a más personas que necesitan acceso a salud.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ ABOUT ═══ -->
+  <section class="screen" id="screen-about">
+    <div class="about-body">
+
+      <!-- ── APP IDENTITY ── -->
+      <div class="ab-app-hero">
+        <div class="ab-app-logo">
+          <svg viewBox="0 0 16 16" fill="none" style="width:28px;height:28px">
+            <rect x="6.5" y="2" width="3" height="12" rx="1" fill="#000" opacity=".82"/>
+            <rect x="2" y="6.5" width="12" height="3" rx="1" fill="#000" opacity=".82"/>
+          </svg>
+        </div>
+        <div>
+          <div class="ab-app-name">MediMind<sup>™</sup></div>
+          <div class="ab-app-tag">Aprende · Entiende · Sana</div>
+        </div>
+      </div>
+      <div class="ab-version-row">
+        <span class="ab-chip">v1.0.0</span>
+        <span class="ab-chip">Colombia 🇨🇴</span>
+        <span class="ab-chip">2025</span>
+        <span class="ab-chip">IA · Salud</span>
+      </div>
+
+      <!-- ── CREADOR ── -->
+      <div class="ab-section-lbl">👨‍💻 Creado por</div>
+      <div class="ab-creator">
+        <div class="ab-creator-ava">DS</div>
+        <div class="ab-creator-info">
+          <div class="ab-creator-name">David Santiago Casas Roncancio</div>
+          <div class="ab-creator-role">Desarrollador · Diseñador · Fundador</div>
+          <div class="ab-creator-loc">📍 Colombia · Roldanillo, Valle del Cauca</div>
+        </div>
+      </div>
+      <div class="ab-creator-links">
+        <a class="ab-link-chip" href="mailto:soporte@medimind.app">✉️ soporte@medimind.app</a>
+        <a class="ab-link-chip" href="https://instagram.com/medimind.app" target="_blank">📸 @medimind.app</a>
+      </div>
+
+      <!-- ── QUÉ ES ── -->
+      <div class="ab-section-lbl">🧠 ¿Qué es MediMind™?</div>
+      <div class="about-card">
+        <p>MediMind™ es un asistente médico con inteligencia artificial que permite a cualquier persona analizar fotos de síntomas, hacer consultas de salud y aprender medicina — de forma gratuita, en español y disponible las 24 horas.</p>
+        <div class="ab-feature-list">
+          <div class="ab-feat"><span class="ab-feat-ic">📸</span><span>Escáner médico por foto con IA</span></div>
+          <div class="ab-feat"><span class="ab-feat-ic">💬</span><span>Chat médico ilimitado con IA</span></div>
+          <div class="ab-feat"><span class="ab-feat-ic">🎓</span><span>3 modos: Normal, Estudiante, Profesional</span></div>
+          <div class="ab-feat"><span class="ab-feat-ic">💎</span><span>Membresía Premium con análisis ilimitados</span></div>
+          <div class="ab-feat"><span class="ab-feat-ic">👤</span><span>Historial de chats y análisis por usuario</span></div>
+          <div class="ab-feat"><span class="ab-feat-ic">❤️</span><span>Sistema de donaciones para mantener la app gratis</span></div>
+        </div>
+      </div>
+
+      <!-- ── IA ── -->
+      <div class="ab-section-lbl">⚙️ Tecnología</div>
+      <div class="about-card">
+        <div class="ab-tech-grid">
+          <div class="ab-tech-item">
+            <div class="ab-tech-name">Claude (Anthropic)</div>
+            <div class="ab-tech-desc">Motor de IA principal para análisis y chat médico</div>
+          </div>
+          <div class="ab-tech-item">
+            <div class="ab-tech-name">Visión por computadora</div>
+            <div class="ab-tech-desc">Análisis de imágenes médicas en tiempo real</div>
+          </div>
+          <div class="ab-tech-item">
+            <div class="ab-tech-name">HTML5 · CSS3 · JS</div>
+            <div class="ab-tech-desc">App web progresiva (PWA), funciona en cualquier dispositivo</div>
+          </div>
+          <div class="ab-tech-item">
+            <div class="ab-tech-name">PayPal</div>
+            <div class="ab-tech-desc">Pasarela de pagos segura para donaciones y Premium</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PLAN FREEMIUM ── -->
+      <div class="ab-section-lbl">💡 Plan de acceso</div>
+      <div class="about-card">
+        <div class="ab-plan-row">
+          <div class="ab-plan">
+            <div class="ab-plan-name">Gratis</div>
+            <div class="ab-plan-items">
+              <span>✔ 2 análisis por día</span>
+              <span>✔ Chat de salud</span>
+              <span>✔ Modo Normal</span>
+              <span>✗ Historial guardado</span>
+            </div>
+          </div>
+          <div class="ab-plan ab-plan-prem">
+            <div class="ab-plan-name prem-color">💎 Premium</div>
+            <div class="ab-plan-price">$10.000 COP/mes</div>
+            <div class="ab-plan-items">
+              <span>✔ Análisis ilimitados</span>
+              <span>✔ Respuestas completas</span>
+              <span>✔ Todos los modos</span>
+              <span>✔ Historial completo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PRIVACIDAD ── -->
+      <div class="ab-section-lbl">🔐 Privacidad y datos</div>
+      <div class="about-card">
+        <div class="ab-privacy-list">
+          <div class="ab-priv-item"><span class="ab-priv-ic ok">✓</span><span>Las fotos se procesan en tiempo real y <strong>no se almacenan</strong> en servidores</span></div>
+          <div class="ab-priv-item"><span class="ab-priv-ic ok">✓</span><span>El historial de chats se guarda <strong>solo en tu dispositivo</strong></span></div>
+          <div class="ab-priv-item"><span class="ab-priv-ic ok">✓</span><span>No compartimos datos personales con terceros</span></div>
+          <div class="ab-priv-item"><span class="ab-priv-ic ok">✓</span><span>Puedes borrar tu historial en cualquier momento desde tu perfil</span></div>
+          <div class="ab-priv-item"><span class="ab-priv-ic ok">✓</span><span>Sin rastreo publicitario · Sin cookies de seguimiento</span></div>
+        </div>
+      </div>
+
+      <!-- ── TÉRMINOS DE USO ── -->
+      <div class="ab-section-lbl">📋 Términos de uso</div>
+      <div class="about-card ab-terms">
+        <p>Al usar MediMind™ aceptas que:</p>
+        <div class="ab-terms-list">
+          <div class="ab-terms-item">1. Esta app es de uso <strong>educativo e informativo</strong> únicamente.</div>
+          <div class="ab-terms-item">2. Los análisis de IA son <strong>orientativos</strong>, no diagnósticos médicos certificados.</div>
+          <div class="ab-terms-item">3. No debes tomar decisiones médicas críticas basadas <strong>exclusivamente</strong> en esta app.</div>
+          <div class="ab-terms-item">4. El uso inadecuado o comercial no autorizado de la app queda prohibido.</div>
+          <div class="ab-terms-item">5. Las donaciones y pagos Premium son <strong>voluntarios</strong> y no garantizan atención médica real.</div>
+        </div>
+      </div>
+
+      <!-- ── AVISO MÉDICO ── -->
+      <div class="ab-disclaimer">
+        <div class="ab-disclaimer-icon">⚠️</div>
+        <div>
+          <strong>Aviso médico importante</strong><br>
+          MediMind™ <strong>NO reemplaza</strong> la consulta con un médico certificado. Ante síntomas graves busca atención médica profesional de inmediato.
+        </div>
+      </div>
+
+      <!-- ── EMERGENCIAS ── -->
+      <div class="ab-section-lbl">🚨 Líneas de emergencia</div>
+      <div class="ab-emergency-grid">
+        <div class="ab-emerg-item"><span class="ab-emerg-flag">🇨🇴</span><span class="ab-emerg-name">Colombia</span><span class="ab-emerg-num">123</span></div>
+        <div class="ab-emerg-item"><span class="ab-emerg-flag">🇪🇸</span><span class="ab-emerg-name">España</span><span class="ab-emerg-num">112</span></div>
+        <div class="ab-emerg-item"><span class="ab-emerg-flag">🇲🇽</span><span class="ab-emerg-name">México</span><span class="ab-emerg-num">911</span></div>
+        <div class="ab-emerg-item"><span class="ab-emerg-flag">🇺🇸</span><span class="ab-emerg-name">EE.UU.</span><span class="ab-emerg-num">911</span></div>
+      </div>
+
+      <!-- ── CONTACTO ── -->
+      <div class="ab-section-lbl">📬 Contacto y soporte</div>
+      <div class="ab-contact-list">
+        <a class="ab-contact-item" href="mailto:soporte@medimind.app">
+          <span class="ab-contact-ic">✉️</span>
+          <div><div class="ab-contact-lbl">Soporte técnico</div><div class="ab-contact-val">soporte@medimind.app</div></div>
+        </a>
+        <a class="ab-contact-item" href="mailto:david@medimind.app">
+          <span class="ab-contact-ic">👨‍💻</span>
+          <div><div class="ab-contact-lbl">Contacto con el creador</div><div class="ab-contact-val">david@medimind.app</div></div>
+        </a>
+        <div class="ab-contact-item" onclick="goTab('donate',document.querySelectorAll('.tab-btn')[3])" style="cursor:pointer">
+          <span class="ab-contact-ic">❤️</span>
+          <div><div class="ab-contact-lbl">Apoyar el proyecto</div><div class="ab-contact-val" style="color:var(--em)">Donar a MediMind™</div></div>
+        </div>
+      </div>
+
+      <!-- ── FOOTER ── -->
+      <div class="ab-footer">
+        <div class="ab-footer-logo">MediMind<sup>™</sup></div>
+        <div class="ab-footer-copy">© 2025 David Santiago Casas Roncancio</div>
+        <div class="ab-footer-copy">Todos los derechos reservados · Colombia</div>
+        <div class="ab-footer-ver">Versión 1.0.0 · Construido con ❤️ en Colombia</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ PREMIUM ═══ -->
+  <section class="screen" id="screen-premium">
+    <div class="premium-body">
+
+      <!-- Badge -->
+      <div class="prem-badge-row">
+        <span class="prem-badge">💎 PREMIUM</span>
+      </div>
+
+      <!-- Hero -->
+      <div class="prem-hero">
+        <h2 class="prem-title">Desbloquea MediMind Premium</h2>
+        <p class="prem-sub">Análisis completos · Sin límites · Historial de consultas</p>
+      </div>
+
+      <!-- Prueba social -->
+      <div class="prem-social">
+        <div class="prem-social-avatars">
+          <div class="psa">DS</div>
+          <div class="psa" style="background:#457FFF;color:#fff">MR</div>
+          <div class="psa" style="background:#9B59B6;color:#fff">AL</div>
+          <div class="psa" style="background:var(--amb);color:#000">JC</div>
+        </div>
+        <span class="prem-social-txt"><strong>+1.000 personas</strong> ya usan MediMind™</span>
+      </div>
+
+      <!-- Precio -->
+      <div class="prem-price-card">
+        <div class="ppc-top">
+          <span class="ppc-label">Plan mensual · Sin compromiso</span>
+          <span class="ppc-pop">✨ Más popular</span>
+        </div>
+        <div class="ppc-price">
+          <span class="ppc-amount">$10.000</span>
+          <span class="ppc-period">COP / mes</span>
+        </div>
+        <div class="ppc-note">≈ $2.5 USD · Cancela cuando quieras</div>
+      </div>
+
+      <!-- Beneficios -->
+      <div class="prem-benefits">
+        <div class="prem-benefit"><span class="pb-check">✔</span><span class="pb-txt">Análisis <strong>ilimitados</strong> cada día</span></div>
+        <div class="prem-benefit"><span class="pb-check">✔</span><span class="pb-txt">Respuestas <strong>más profundas</strong> y detalladas</span></div>
+        <div class="prem-benefit"><span class="pb-check">✔</span><span class="pb-txt"><strong>Historial</strong> de consultas y análisis</span></div>
+        <div class="prem-benefit"><span class="pb-check">✔</span><span class="pb-txt">Acceso a modo <strong>Profesional</strong> y Estudiante</span></div>
+        <div class="prem-benefit"><span class="pb-check">✔</span><span class="pb-txt">Experiencia <strong>sin restricciones</strong></span></div>
+        <div class="prem-benefit prem-coming"><span class="pb-check pbc">⏳</span><span class="pb-txt" style="color:var(--t3)">Próximamente: PDF exportable de resultados</span></div>
+      </div>
+
+      <!-- Comparativa -->
+      <div class="prem-compare">
+        <div class="pc-row pc-header">
+          <span></span>
+          <span class="pc-col">Gratis</span>
+          <span class="pc-col pcc-em">Premium</span>
+        </div>
+        <div class="pc-row">
+          <span class="pc-feat">Análisis por día</span>
+          <span class="pc-col">2</span>
+          <span class="pc-col pcc-em">∞</span>
+        </div>
+        <div class="pc-row">
+          <span class="pc-feat">Detalle del análisis</span>
+          <span class="pc-col">Básico</span>
+          <span class="pc-col pcc-em">Completo</span>
+        </div>
+        <div class="pc-row">
+          <span class="pc-feat">Modos IA</span>
+          <span class="pc-col">Normal</span>
+          <span class="pc-col pcc-em">Todos</span>
+        </div>
+        <div class="pc-row">
+          <span class="pc-feat">Historial</span>
+          <span class="pc-col">✗</span>
+          <span class="pc-col pcc-em">✔</span>
+        </div>
+      </div>
+
+      <!-- Estado gratuito -->
+      <div class="prem-free-status" id="freeStatus">
+        <span id="freeStatusTxt">Usando versión gratuita · <strong id="usesLeft">2</strong> análisis restantes hoy</span>
+      </div>
+
+      <!-- ══ SECCIÓN DE PAGO ══ -->
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+
+        <!-- Separador -->
+        <div style="display:flex;align-items:center;gap:10px;margin:4px 0">
+          <div style="flex:1;height:1px;background:var(--bd)"></div>
+          <span style="font-size:0.72rem;color:var(--t3);white-space:nowrap">Elige tu método de pago</span>
+          <div style="flex:1;height:1px;background:var(--bd)"></div>
+        </div>
+
+        <!-- PayPal -->
+        <a href="https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-6LA907027G979061SNH4LPGA"
+           target="_blank" rel="noopener"
+           style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border-radius:50px;background:#FFC439;color:#000;font-weight:700;font-size:1rem;text-decoration:none;box-shadow:0 4px 20px rgba(255,196,57,0.35);transition:opacity .15s"
+           onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+          <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.076 21.337H2.47a.641.641 0 01-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.06 1.207 1.307 2.755.765 4.756-.06.213-.127.432-.2.656C18.327 10.39 15.798 12 12.17 12H9.927a.75.75 0 00-.74.633l-.83 5.265-.281 3.439z" fill="#003087"/>
+            <path d="M19.934 7.335c-.97 5.022-4.302 7.343-9.286 7.343H8.234l-1.232 7.797h3.288a.58.58 0 00.573-.49l.236-1.506.453-2.874a.58.58 0 01.572-.49h1.363c3.953 0 7.049-1.605 7.952-6.25.381-1.955.184-3.587-.505-4.53z" fill="#009cde"/>
+          </svg>
+          Suscribirse con PayPal
+        </a>
+
+        <!-- Wompi -->
+        <button onclick="window.open('https://checkout.wompi.co/l/IGpZ5N','_blank')"
+          style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:50px;background:var(--s2);color:var(--t1);font-weight:600;font-size:0.9rem;border:1.5px solid var(--bd2);cursor:pointer;transition:background .15s">
+          💳 Pagar con PSE / Tarjeta <span style="font-size:0.8rem">🇨🇴</span>
+        </button>
+
+        <!-- Seguridad -->
+        <p style="text-align:center;font-size:0.7rem;color:var(--t3);margin:0;line-height:1.6">
+          🔒 Pagos seguros · Sin contratos · Cancela cuando quieras<br>
+          <em>Después de pagar con Wompi serás redirigido con Premium activo.</em>
+        </p>
+
+      </div>
+
+      <!-- Copy -->
+      <div class="prem-copy-bottom">"Tu apoyo mantiene MediMind™ gratuito para todos"</div>
+
+    </div>
+  </section>
+
+  <!-- ═══ ACCOUNT ═══ -->
+  <section class="screen" id="screen-account">
+
+    <!-- LOGIN VIEW -->
+    <div class="acc-view" id="view-login">
+      <div class="acc-body">
+        <div class="acc-header">
+          <div class="acc-logo">👤</div>
+          <h2 class="acc-title">Inicia sesión</h2>
+          <p class="acc-sub">Guarda tu historial de chats y análisis</p>
+        </div>
+        <div class="acc-form">
+          <div class="acc-field">
+            <label class="acc-label">Correo electrónico</label>
+            <input class="acc-input" id="loginEmail" type="email" placeholder="tu@correo.com" autocomplete="email">
+          </div>
+          <div class="acc-field">
+            <label class="acc-label">Contraseña</label>
+            <div class="acc-pass-wrap">
+              <input class="acc-input" id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password">
+              <button class="acc-eye" onclick="togglePass('loginPass',this)">👁</button>
+            </div>
+          </div>
+          <div id="loginErr" class="acc-err"></div>
+          <button class="acc-btn-main" id="loginBtn" onclick="doLogin()">Iniciar sesión</button>
+          <div class="acc-divider">o</div>
+          <button class="acc-btn-google" onclick="doGoogleLogin()">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Continuar con Google
+          </button>
+        </div>
+        <div class="acc-switch">
+          ¿No tienes cuenta?
+          <button onclick="showView('register')">Regístrate gratis</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGISTER VIEW -->
+    <div class="acc-view" id="view-register" style="display:none">
+      <div class="acc-body">
+        <div class="acc-header">
+          <div class="acc-logo">✨</div>
+          <h2 class="acc-title">Crear cuenta</h2>
+          <p class="acc-sub">Gratis · Guarda tus chats y análisis</p>
+        </div>
+        <div class="acc-form">
+          <div class="acc-field">
+            <label class="acc-label">Nombre</label>
+            <input class="acc-input" id="regName" type="text" placeholder="Tu nombre" autocomplete="name">
+          </div>
+          <div class="acc-field">
+            <label class="acc-label">Correo electrónico</label>
+            <input class="acc-input" id="regEmail" type="email" placeholder="tu@correo.com" autocomplete="email">
+          </div>
+          <div class="acc-field">
+            <label class="acc-label">Contraseña</label>
+            <div class="acc-pass-wrap">
+              <input class="acc-input" id="regPass" type="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+              <button class="acc-eye" onclick="togglePass('regPass',this)">👁</button>
+            </div>
+          </div>
+          <div id="regErr" class="acc-err"></div>
+          <button class="acc-btn-main" id="regBtn" onclick="doRegister()">Crear cuenta gratis</button>
+          <div class="acc-divider">o</div>
+          <button class="acc-btn-google" onclick="doGoogleLogin()">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Continuar con Google
+          </button>
+        </div>
+        <div class="acc-switch">
+          ¿Ya tienes cuenta?
+          <button onclick="showView('login')">Inicia sesión</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE VIEW (logged in) -->
+    <div class="acc-view" id="view-profile" style="display:none">
+      <div class="acc-body">
+
+        <!-- User card -->
+        <div class="prof-card">
+          <div class="prof-avatar" id="profAvatar">?</div>
+          <div class="prof-info">
+            <div class="prof-name" id="profName">—</div>
+            <div class="prof-email" id="profEmail">—</div>
+            <div class="prof-badge" id="profBadge">Versión gratuita</div>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="prof-stats">
+          <div class="pstat">
+            <div class="pstat-val" id="statAnalysis">0</div>
+            <div class="pstat-lbl">Análisis</div>
+          </div>
+          <div class="pstat">
+            <div class="pstat-val" id="statChats">0</div>
+            <div class="pstat-lbl">Chats</div>
+          </div>
+          <div class="pstat">
+            <div class="pstat-val" id="statDays">0</div>
+            <div class="pstat-lbl">Días activo</div>
+          </div>
+        </div>
+
+        <!-- Chat history -->
+        <div class="hist-header">
+          <span class="hist-title">💬 Historial de chats</span>
+          <button class="hist-clear" onclick="clearHistory()">Limpiar</button>
+        </div>
+        <div class="hist-list" id="histList">
+          <div class="hist-empty" id="histEmpty">
+            <span style="font-size:1.6rem">💬</span>
+            <span>Aún no tienes chats guardados.<br>Empieza una conversación.</span>
+          </div>
+        </div>
+
+        <!-- Analysis history -->
+        <div class="hist-header" style="margin-top:4px">
+          <span class="hist-title">🔬 Análisis guardados</span>
+        </div>
+        <div class="hist-list" id="analysisList">
+          <div class="hist-empty" id="analysisEmpty">
+            <span style="font-size:1.6rem">🔬</span>
+            <span>Sin análisis guardados aún.</span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <button class="acc-btn-premium" onclick="goTab('premium',document.querySelectorAll('.tab-btn')[2])">
+          💎 Actualizar a Premium
+        </button>
+        <button class="acc-btn-logout" onclick="doLogout()">Cerrar sesión</button>
+
+      </div>
+    </div>
+
+  </section>
+
+</div><!-- .app -->
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  MediMind™ — App completa
+//  Creada por: David Santiago Casas Roncancio
+// ═══════════════════════════════════════════════════════════
+
+// ─── CONFIGURACIÓN ────────────────────────────────────────
+const CLAUDE_KEY = 'TU_API_KEY_AQUI'; // → console.anthropic.com
+// ─────────────────────────────────────────────────────────
+
+// ═══════════════════════════════════════════════════════════
+//  SISTEMA DE MEMBRESÍA
+//  FUTURO: reemplazar localStorage por backend real con auth
+//  de usuario para control de acceso premium real.
+// ═══════════════════════════════════════════════════════════
+const FREE_LIMIT = 2; // análisis gratuitos por día
+
+const PREM = {
+  // Estado premium con verificación de expiración
+  get active(){
+    if(localStorage.getItem('mm_premium')!=='1') return false;
+    const expira = localStorage.getItem('mm_premium_expira');
+    if(expira && new Date() > new Date(expira)){
+      localStorage.setItem('mm_premium','0');
+      return false;
+    }
+    return true;
+  },
+  set active(v){ localStorage.setItem('mm_premium', v?'1':'0'); },
+
+  // Contador de usos diarios
+  get uses(){
+    const today = new Date().toDateString();
+    if(localStorage.getItem('mm_uses_date')!==today){
+      localStorage.setItem('mm_uses_date', today);
+      localStorage.setItem('mm_uses', '0');
+    }
+    return parseInt(localStorage.getItem('mm_uses')||'0');
+  },
+  incUses(){
+    localStorage.setItem('mm_uses', String(this.uses + 1));
+    this.updateFreeStatus();
+  },
+  get remaining(){ 
+    var vip = window.FB_USER && window.VIP_EMAILS && window.VIP_EMAILS.indexOf(window.FB_USER.email.toLowerCase())>-1;
+    return vip ? 999 : Math.max(0, FREE_LIMIT - this.uses); 
+  },
+  get canAnalyze(){ 
+    var vip = window.FB_USER && window.VIP_EMAILS && window.VIP_EMAILS.indexOf(window.FB_USER.email.toLowerCase())>-1;
+    return vip || this.active || this.uses < FREE_LIMIT; 
+  },
+
+  updateFreeStatus(){
+    const el = document.getElementById('usesLeft');
+    if(el) el.textContent = this.remaining;
+    const st = document.getElementById('freeStatus');
+    var isVip = window.FB_USER && window.VIP_EMAILS && window.VIP_EMAILS.indexOf(window.FB_USER.email.toLowerCase())>-1;
+    if(st){
+      if(isVip){
+        st.innerHTML='<span style="color:var(--em)">⭐ Acceso VIP · Análisis ilimitados</span>';
+      } else if(this.active){
+        st.innerHTML='<span style="color:var(--em)">💎 Premium activo · Análisis ilimitados</span>';
+      } else {
+        st.innerHTML='Versión gratuita · <strong id="usesLeft">'+this.remaining+'</strong> análisis restantes hoy';
+      }
+    }
+  }
+};
+
+// ── Tracking ───────────────────────────────────────────────
+function track(event, data){
+  console.log('TRACK:', event, JSON.stringify(data, null, 2));
+  // Reemplazar con Google Analytics / Mixpanel en producción:
+  // if(typeof gtag!=='undefined') gtag('event', event, data);
+}
+
+const S={b64:null,imgType:'image/jpeg',hist:[],busy:false,chatStarted:false};
+
+// ── Tabs ───────────────────────────────────────────────────
+function goTab(n,btn){
+  window.goTab = goTab;
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  var sc = document.getElementById('screen-'+n);
+  if(sc) sc.classList.add('active');
+  if(btn) btn.classList.add('active');
+  // Mostrar modos solo en Chat y Escáner
+  var pill = document.getElementById('modePill');
+  if(pill) pill.style.display = (n==='chat'||n==='scan') ? 'flex' : 'none';
+  if(n==='donate') track('donation_started',{source:'tab'});
+  if(n==='premium'){
+    PREM.updateFreeStatus();
+    track('premium_view',{source:'tab',isPremium:PREM.active});
+  }
+  if(n==='account'){
+    if(AUTH.isLoggedIn){ renderProfile(); showView('profile'); }
+    else { showView('login'); }
+    track('account_view',{isLoggedIn:AUTH.isLoggedIn});
+  }
+}
+// ── Barra de historial de chat ─────────────────────────────
+function toggleHistBar(open){
+  document.getElementById('chatHistBar').classList.toggle('open', open);
+  document.getElementById('chatHistOverlay').classList.toggle('open', open);
+  if(open) loadChatHistBar();
+}
+
+async function loadChatHistBar(){
+  const list = document.getElementById('chbList');
+  if(!window.FB_USER){
+    list.innerHTML='<div class="chb-empty">Inicia sesión para ver tu historial</div>';
+    return;
+  }
+  list.innerHTML='<div class="chb-empty">Cargando...</div>';
+  try{
+    const chats = window.loadChatHistory ? await window.loadChatHistory() : [];
+    document.getElementById('chatHistCount').textContent = chats.length ? `(${chats.length})` : '';
+    if(chats.length === 0){
+      list.innerHTML='<div class="chb-empty">Aún no tienes chats guardados</div>';
+      return;
+    }
+    list.innerHTML = '';
+    chats.forEach(c=>{
+      const d = document.createElement('div');
+      d.className = 'chb-item';
+      const ts = c.ts&&c.ts.toDate ? c.ts.toDate() : new Date(c.ts||Date.now());
+      const modeIco = {normal:'👤',estudiante:'🎓',profesional:'🩺'}[c.mode]||'💬';
+      d.innerHTML=`
+        <div class="chb-item-q">${modeIco} ${esc(c.userMsg||'').slice(0,50)}</div>
+        <div class="chb-item-meta">${fmtTime(ts.toISOString())}</div>`;
+      d.onclick=()=>{
+        document.getElementById('cTa').value = c.userMsg||'';
+        document.getElementById('sBtn').disabled = false;
+        toggleHistBar(false);
+        document.getElementById('cTa').focus();
+      };
+      list.appendChild(d);
+    });
+  } catch(e){
+    list.innerHTML='<div class="chb-empty">Error cargando historial</div>';
+  }
+}
+
+function newChat(){
+  S.hist = []; S.chatStarted = false;
+  document.getElementById('cMsgs').innerHTML=`
+    <div class="empty-st">
+      <div class="empty-ic">🩺</div>
+      <div class="empty-ttl">Dr. MediMind™ listo</div>
+      <div class="empty-sub">Cuéntame tus síntomas o haz cualquier pregunta.</div>
+    </div>`;
+  document.getElementById('qqs').style.display='';
+  document.getElementById('cTa').value='';
+  document.getElementById('sBtn').disabled=true;
+}
+var _currentMode = 'normal';
+const getMode=()=>_currentMode;
+function setMode(mode, btn){
+  _currentMode = mode;
+  document.getElementById('modeSel').value = mode;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  var nombres = {normal:'👤 Normal', estudiante:'🎓 Estudiante', profesional:'🩺 Profesional'};
+  var lbl = document.getElementById('modeLbl');
+  if(lbl) lbl.textContent = nombres[mode]||mode;
+  toast(nombres[mode]||mode);
+}
+
+// ── Scan files ─────────────────────────────────────────────
+document.getElementById('fi').addEventListener('change',e=>{const f=e.target.files[0];if(f)loadImg(f)});
+document.getElementById('cf').addEventListener('change',e=>{const f=e.target.files[0];if(f)chatImg(f);e.target.value=''});
+function pickFile(){if(!S.busy)document.getElementById('fi').click()}
+
+function loadImg(file){
+  const r=new FileReader();
+  r.onload=ev=>{
+    const url=ev.target.result;
+    S.b64=url.split(',')[1];S.imgType=file.type||'image/jpeg';
+    const zone=document.getElementById('sz');
+    const old=zone.querySelector('img');if(old)old.remove();
+    const img=document.createElement('img');img.src=url;img.alt='';
+    zone.insertBefore(img,zone.firstChild);
+    zone.classList.add('has');
+    document.getElementById('aBtn').disabled=false;
+    document.getElementById('scanResult').innerHTML='';
+  };
+  r.readAsDataURL(file);
+}
+function clearImg(){
+  S.b64=null;
+  const zone=document.getElementById('sz');
+  const img=zone.querySelector('img');if(img)img.remove();
+  zone.classList.remove('has');
+  document.getElementById('aBtn').disabled=true;
+  document.getElementById('scanResult').innerHTML='';
+  document.getElementById('fi').value='';
+}
+
+// Drag & drop
+const szEl=document.getElementById('sz');
+szEl.addEventListener('dragover',e=>{e.preventDefault();szEl.classList.add('dov')});
+szEl.addEventListener('dragleave',()=>szEl.classList.remove('dov'));
+szEl.addEventListener('drop',e=>{
+  e.preventDefault();szEl.classList.remove('dov');
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image/'))loadImg(f);
+});
+
+// ── Analyze ────────────────────────────────────────────────
+async function doAnalyze(){
+  if(!S.b64||S.busy)return;
+
+  // 🔒 Verificar límite gratuito
+  if(!PREM.canAnalyze){
+    toast('Has alcanzado tu límite diario gratuito');
+    setTimeout(()=>{ goTab('premium', document.querySelectorAll('.tab-btn')[2]); }, 600);
+    return;
+  }
+
+  setLoad(true); document.getElementById('scanResult').innerHTML='';
+
+  // Comprimir imagen antes de enviar (máx 800px, calidad 0.75)
+  let b64 = S.b64;
+  let imgType = S.imgType;
+  try{
+    const compressed = await compressImage(S.b64, S.imgType, 800, 0.75);
+    b64 = compressed.b64;
+    imgType = compressed.type;
+  }catch(e){ console.warn('No se pudo comprimir, usando original'); }
+
+  const sys=buildSys(getMode(),'image');
+  const msg=[
+    {type:'image',source:{type:'base64',media_type:imgType,data:b64}},
+    {type:'text',text:'Analiza esta imagen médica. Responde SOLO con JSON (sin markdown):\n{"condition":"...","risk":"low|medium|high","confidence":0.0,"explanation":"...","action":"...","technical":null,"differential":null}'}
+  ];
+  try{
+    const raw=await callClaude(sys,[{role:'user',content:msg}]);
+    let d;
+    try{d=JSON.parse(raw.replace(/```json\n?|```/g,'').trim())}
+    catch{d={condition:'Análisis completado',risk:'medium',confidence:.7,explanation:raw,action:'Revisa el análisis completo.',technical:null,differential:null}}
+    renderResult(d,getMode());
+    PREM.incUses();
+    saveAnalysis(d.condition, d.risk);
+    track('analysis_completed',{risk:d.risk,mode:getMode(),isPremium:PREM.active,usesLeft:PREM.remaining});
+  }catch(e){toast('⚠️ Error al analizar. Intenta con una imagen más pequeña.');console.error(e)}
+  finally{setLoad(false)}
+}
+
+// Comprimir imagen con canvas
+function compressImage(b64, type, maxPx, quality){
+  return new Promise((res, rej)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      let w = img.width, h = img.height;
+      if(w > maxPx || h > maxPx){
+        if(w > h){ h = Math.round(h * maxPx / w); w = maxPx; }
+        else{ w = Math.round(w * maxPx / h); h = maxPx; }
+      }
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      const outType = 'image/jpeg';
+      const data = c.toDataURL(outType, quality).split(',')[1];
+      res({b64: data, type: outType});
+    };
+    img.onerror = rej;
+    img.src = `data:${type};base64,${b64}`;
+  });
+}
+
+function renderResult(d,mode){
+  const riskLbl={low:'Riesgo Bajo',medium:'Riesgo Moderado',high:'Riesgo Alto'}[d.risk]||'Moderado';
+  const pct=Math.round((d.confidence||.7)*100);
+  let extra='';
+  if(d.technical&&mode!=='normal')
+    extra+=`<div class="rs"><div class="rs-lbl">${mode==='profesional'?'🔬 Análisis clínico':'🎓 Fisiopatología'}</div><div class="rs-body">${fmt(d.technical)}</div></div>`;
+  if(Array.isArray(d.differential)&&d.differential.length)
+    extra+=`<div class="rs"><div class="rs-lbl">⚡ Diagnóstico diferencial</div>${d.differential.map(x=>`<div class="rs-item">${esc(x)}</div>`).join('')}</div>`;
+
+  document.getElementById('scanResult').innerHTML=`
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-cond">${esc(d.condition)}</div>
+        <div class="risk-row">
+          <div class="risk-chip risk-${d.risk}"><div class="risk-dot"></div>${riskLbl}</div>
+          <div class="conf-wrap">
+            <div class="conf-lbl">Confianza · ${pct}%</div>
+            <div class="conf-bar"><div class="conf-fill" id="cf" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="result-secs">
+        <div class="rs"><div class="rs-lbl">💡 Explicación</div><div class="rs-body">${fmt(d.explanation)}</div></div>
+        <div class="rs"><div class="rs-lbl">✅ Qué hacer</div><div class="rs-body">${fmt(d.action)}</div></div>
+        ${extra}
+      </div>
+    </div>
+    <div class="disclaimer">⚠️ Orientativo. No reemplaza diagnóstico médico profesional. Emergencias: 123 · 112 · 911</div>`;
+  requestAnimationFrame(()=>setTimeout(()=>{const f=document.getElementById('cf');if(f)f.style.width=pct+'%'},80));
+
+  // Inyectar paywall o nudge según estado de usuario
+  setTimeout(()=>{
+    const sr=document.getElementById('scanResult');
+    if(!sr) return;
+
+    if(!PREM.active && PREM.remaining <= 1){
+      // 🔒 PAYWALL — límite casi alcanzado
+      const pw=document.createElement('div');
+      pw.className='paywall-block';
+      const isLast = PREM.remaining === 1;
+      pw.innerHTML=`
+        <div class="pw-lock">🔒</div>
+        <div class="pw-title">Para ver el análisis completo desbloquea MediMind Premium</div>
+        <div class="pw-sub">${isLast
+          ? 'Este es tu <strong>último análisis gratuito</strong> de hoy. Activa Premium para acceso ilimitado.'
+          : 'Has alcanzado tu límite gratuito diario. Activa Premium para continuar sin restricciones.'
+        }</div>
+        <button class="pw-btn" onclick="track('premium_click',{source:'paywall'});goTab('premium',document.querySelectorAll('.tab-btn')[2])">
+          Desbloquear Premium 🚀
+        </button>
+        <div class="pw-free-note">$10.000 COP/mes · Cancela cuando quieras</div>`;
+      sr.appendChild(pw);
+      track('premium_view',{source:'paywall',remaining:PREM.remaining});
+    } else if(!PREM.active){
+      // Nudge suave de conversión
+      const nudge=document.createElement('div');
+      nudge.className='conversion-nudge';
+      nudge.innerHTML=`
+        <div class="nudge-txt">¿Te fue útil este análisis? ✨ <span style="color:var(--t3);font-size:0.72rem">${PREM.remaining} análisis gratis restantes hoy</span></div>
+        <button class="nudge-btn" onclick="track('premium_click',{source:'nudge'});goTab('premium',document.querySelectorAll('.tab-btn')[2])">
+          💎 Ver Premium
+        </button>`;
+      sr.appendChild(nudge);
+    } else {
+      // Usuario premium: solo nudge de donación
+      const nudge=document.createElement('div');
+      nudge.className='conversion-nudge';
+      nudge.innerHTML=`
+        <div class="nudge-txt">💎 Análisis ilimitado activo</div>
+        <button class="nudge-btn" onclick="track('donation_started',{source:'nudge'});goTab('donate',document.querySelectorAll('.tab-btn')[3])">
+          ❤️ Apoyar MediMind
+        </button>`;
+      sr.appendChild(nudge);
+    }
+  },800);
+}
+
+// ── Chat ───────────────────────────────────────────────────
+const ta=document.getElementById('cTa');
+const sBtn=document.getElementById('sBtn');
+const cMsgs=document.getElementById('cMsgs');
+ta.addEventListener('input',()=>{sBtn.disabled=ta.value.trim()==='';});
+function cKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();if(!sBtn.disabled)sendChat()}}
+function resize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px'}
+function sendQ(btn){ta.value=btn.textContent;sBtn.disabled=false;sendChat();document.getElementById('qqs').style.display='none'}
+function goDescribe(){goTab('chat',document.querySelectorAll('.tab-btn')[1]);setTimeout(()=>ta.focus(),200)}
+
+async function sendChat(){
+  const txt=ta.value.trim();if(!txt||S.busy)return;
+  initChat();ta.value='';ta.style.height='';sBtn.disabled=true;
+  addMsg('user',txt);S.hist.push({role:'user',content:txt});
+  await runAI();
+}
+async function chatImg(file){
+  if(S.busy)return;initChat();
+  const r=new FileReader();
+  r.onload=async ev=>{
+    const url=ev.target.result,b64=url.split(',')[1],mt=file.type||'image/jpeg';
+    addImgMsg(url);
+    S.hist.push({role:'user',content:[
+      {type:'image',source:{type:'base64',media_type:mt,data:b64}},
+      {type:'text',text:'Analiza médicamente esta imagen de forma clara.'}
+    ]});
+    await runAI();
+  };
+  r.readAsDataURL(file);
+}
+async function runAI(){
+  setLoad(true);const tid=showTyping();
+  const lastUserMsg = S.hist.length ? S.hist[S.hist.length-1] : null;
+  try{
+    const reply=await callClaude(buildSys(getMode(),'chat'),S.hist.slice(-16));
+    rmTyping(tid);
+    typeMsg(reply);
+    S.hist.push({role:'assistant',content:reply});
+    if(lastUserMsg && typeof lastUserMsg.content==='string'){
+      saveChat(lastUserMsg.content, reply);
+    }
+  }catch(e){rmTyping(tid);addMsg('ai','Error de conexión. Verifica tu API key.');console.error(e)}
+  finally{setLoad(false)}
+}
+
+// ── Efecto escritura progresiva (palabra por palabra) ──────
+function typeMsg(fullText){
+  var d = document.createElement('div');
+  d.className = 'msg ai';
+  d.innerHTML = '<div class="msg-hdr">Dr. MediMind\u2122</div><div class="bubble" id="tbubble"></div>';
+  cMsgs.appendChild(d);
+  cMsgs.scrollTop = cMsgs.scrollHeight;
+  var bubble = d.querySelector('#tbubble');
+  var words = fullText.split(' ');
+  var i = 0, built = '';
+  function next(){
+    if(i >= words.length){
+      bubble.innerHTML = fmt(fullText);
+      cMsgs.scrollTop = cMsgs.scrollHeight;
+      return;
+    }
+    var chunk = i < 3 ? 1 : i < 15 ? 2 : 4;
+    for(var j=0; j<chunk && i<words.length; j++, i++){
+      built += (built?' ':'')+words[i];
+    }
+    bubble.textContent = built + (i<words.length?' ▍':'');
+    cMsgs.scrollTop = cMsgs.scrollHeight;
+    setTimeout(next, 22);
+  }
+  next();
+}
+function initChat(){if(!S.chatStarted){cMsgs.innerHTML='';S.chatStarted=true}}
+function addMsg(r,t){
+  const d=document.createElement('div');d.className=`msg ${r}`;
+  d.innerHTML=`<div class="msg-hdr">${r==='user'?'Tú':'Dr. MediMind™'}</div><div class="bubble">${r==='ai'?fmt(t):esc(t)}</div>`;
+  cMsgs.appendChild(d);cMsgs.scrollTop=cMsgs.scrollHeight;
+}
+function addImgMsg(url){
+  const d=document.createElement('div');d.className='msg user';
+  d.innerHTML=`<div class="msg-hdr">Tú</div><img class="msg-img" src="${url}" alt="foto">`;
+  cMsgs.appendChild(d);cMsgs.scrollTop=cMsgs.scrollHeight;
+}
+function showTyping(){
+  const id='ty'+Date.now(),d=document.createElement('div');
+  d.className='msg ai';d.id=id;
+  d.innerHTML=`<div class="msg-hdr">Dr. MediMind™</div><div class="bubble"><div class="typing-bbl"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div></div>`;
+  cMsgs.appendChild(d);cMsgs.scrollTop=cMsgs.scrollHeight;return id;
+}
+function rmTyping(id){const e=document.getElementById(id);if(e)e.remove()}
+
+// ── Multi-IA — Fallback system (sin modificar callClaude) ──
+const AI_PROVIDERS={primary:'claude',fallback:'openai',optional:'local'};
+async function callAI(system,messages){
+  try{
+    return await callClaude(system,messages);
+  }catch(e){
+    console.warn('Claude no disponible, intentando fallback...',e.message);
+    return await callFallbackAI(system,messages);
+  }
+}
+async function callFallbackAI(system,messages){
+  // TODO: integrar OpenAI u otro proveedor como fallback
+  return 'Servicio de IA temporalmente no disponible. Por favor intenta en unos momentos.';
+}
+
+// ── Claude API (sin modificar) ─────────────────────────────
+async function callClaude(system,messages){
+  const isLocal = location.hostname==='localhost'||location.hostname==='127.0.0.1';
+
+  const payload={
+    system,
+    messages:messages.map(m=>({
+      role:m.role,
+      content:typeof m.content==='string'?[{type:'text',text:m.content}]:m.content
+    }))
+  };
+
+  // Desarrollo local: llama directo a Anthropic si hay key configurada
+  if(isLocal && CLAUDE_KEY && CLAUDE_KEY!=='TU_API_KEY_AQUI'){
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':CLAUDE_KEY,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({model:'claude-opus-4-6',max_tokens:1200,...payload})
+    });
+    const text=await res.text();
+    let data;
+    try{ data=JSON.parse(text); }
+    catch(e){ console.error('Respuesta inválida (local):',text); throw new Error('Error al conectar con la IA'); }
+    if(!res.ok) throw new Error((data.error&&data.error.message)||`HTTP ${res.status}`);
+    return (data.content&&data.content[0]&&data.content[0].text)||'';
+  }
+
+  // Producción: Netlify Function segura (CLAUDE_API_KEY en variables de entorno)
+  // Configura en: Netlify → Site Settings → Environment Variables → CLAUDE_API_KEY
+  // TODO: reemplazar localStorage por backend real (usuarios + pagos verificados)
+  const res=await fetch('/api/claude',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)
+  });
+
+  // Leer como texto primero para evitar "Unexpected token '<'" si llega HTML de error
+  const text=await res.text();
+  let data;
+  try{ data=JSON.parse(text); }
+  catch(e){
+    console.error('Backend devolvió HTML (probablemente 404):', text.slice(0,200));
+    throw new Error('Función de IA no encontrada. Sube /netlify/functions/claude.js y configura CLAUDE_API_KEY.');
+  }
+  if(!res.ok) throw new Error((data.error&&data.error.message)||`HTTP ${res.status}`);
+  return (data.content&&data.content[0]&&data.content[0].text)||'';
+}
+
+function buildSys(mode,ctx){
+  const nombre = (window.FB_PROFILE&&window.FB_PROFILE.name&&window.FB_PROFILE.name.split(' ')[0]) || (window.FB_USER&&window.FB_USER.displayName&&window.FB_USER.displayName.split(' ')[0]) || null;
+  const saludo = nombre ? `El usuario se llama ${nombre}. Dirígete a él/ella por su nombre cuando sea natural y apropiado.` : '';
+  const base=`Eres el Dr. MediMind™, asistente médico de IA creado por David Santiago Casas Roncancio. Responde siempre en español.
+${saludo}
+Al final de cada respuesta incluye: "⚠️ Esta información es orientativa y no reemplaza la consulta médica profesional."
+Si hay emergencia grave (dolor torácico severo, dificultad respiratoria grave, pérdida de consciencia, sangrado severo), indica llamar al número de emergencias de inmediato.`;
+  const m={
+    normal:`Modo NORMAL: lenguaje simple y cálido. Sin tecnicismos. Usa listas con guión si hay varios puntos. NO uses tablas. Máximo 200 palabras.`,
+    estudiante:`Modo ESTUDIANTE: terminología médica correcta. Puedes usar listas y subtítulos con ###. Fisiopatología, mecanismos, diagnóstico diferencial. 300-500 palabras.`,
+    profesional:`Modo PROFESIONAL: clínico completo. Usa ### para secciones, listas para criterios. CIE-10 si aplica, guías de práctica, líneas terapéuticas. Sin límite.`
+  };
+  return`${base}\n\n${m[mode]||m.normal}\n\n${ctx==='image'?'Analiza médicamente la imagen adjunta.':'El usuario tiene una consulta médica.'}`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  DONACIONES — PayPal
+// ═══════════════════════════════════════════════════════════
+let selectedAmt=3;
+
+// ── Tracking ───────────────────────────────────────────────
+function track(event,data){
+  // Reemplazar con Google Analytics / Mixpanel / Amplitude en producción
+  console.log('TRACK:', event, JSON.stringify(data, null, 2));
+  // Ejemplo GA4 (descomentar cuando tengas Google Analytics):
+  // if(typeof gtag!=='undefined') gtag('event', event, data);
+}
+
+// ── Links dentro de la app ────────────────────────────────
+function openInApp(url){
+  window.open(url,'_blank','noopener,noreferrer');
+}
+
+// ── Donación Wompi ─────────────────────────────────────────
+function doPayPal(){
+  track('donation_started',{method:'wompi'});
+  openInApp('https://checkout.wompi.co/l/oxXemt');
+}
+
+// ── Activar Premium 30 días (PayPal o Wompi) ───────────────
+function activarPremium30dias(){
+  const exp = new Date();
+  exp.setDate(exp.getDate() + 30);
+  localStorage.setItem('mm_premium', '1');
+  localStorage.setItem('mm_premium_expira', exp.toISOString());
+  PREM.updateFreeStatus();
+  track('premium_purchase',{method:'auto',price:'10000_COP'});
+  toast('💎 ¡Premium activado! Análisis ilimitados por 30 días.');
+}
+
+// ── Detectar retorno de Wompi / PayPal en URL ──────────────
+(function detectarURLParams(){
+  const p = new URLSearchParams(window.location.search);
+  if(p.get('premium')==='ok' || p.get('status')==='APPROVED'){
+    activarPremium30dias();
+    history.replaceState({}, '', location.pathname);
+  }
+  if(p.get('donacion')==='ok'){
+    history.replaceState({}, '', location.pathname);
+    setTimeout(()=> toast('❤️ ¡Gracias por apoyar MediMind™! Tu donación hace la diferencia.'), 500);
+  }
+})();
+
+// ── Premium CTA ────────────────────────────────────────────
+function activatePremium(){
+  track('premium_click',{source:'cta',isPremium:PREM.active});
+  openInApp('https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-6LA907027G979061SNH4LPGA');
+}
+
+// Inicializar estado premium al cargar
+PREM.updateFreeStatus();
+// Mostrar modos en pantalla inicial (scan es la activa)
+document.addEventListener('DOMContentLoaded', function(){
+  var pill = document.getElementById('modePill');
+  if(pill) pill.style.display = 'flex';
+});
+
+// ── Montos COP ─────────────────────────────────────────────
+function selectCOP(btn,cop){
+  document.querySelectorAll('.cop-chip').forEach(c=>c.classList.remove('sel'));
+  btn.classList.add('sel');
+  // Conversión aproximada COP → USD (tasa referencial)
+  const usd=parseFloat((cop/4000).toFixed(2));
+  // Limpiar selección USD
+  document.querySelectorAll('.amt-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('customWrap').classList.remove('sel');
+  document.getElementById('customAmt').value=usd;
+  selectedAmt=usd;
+  updatePayBtn();
+  updateSupportTxt();
+}
+
+// ── Texto dinámico de apoyo ────────────────────────────────
+function updateSupportTxt(){
+  const el=document.getElementById('supportTxt');
+  if(!el)return;
+  if(selectedAmt>=1){
+    el.style.opacity='1';
+    el.textContent=`Estás apoyando con $${selectedAmt} USD ❤️`;
+  } else {
+    el.style.opacity='0.4';
+    el.textContent='Elige un monto para apoyar';
+  }
+}
+
+function selectAmt(btn,amt){
+  document.querySelectorAll('.amt-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  selectedAmt=amt;
+}
+
+function initStripe(){ /* reservado para integración futura */ }
+
+// ═══════════════════════════════════════════════════════════
+//  AUTH — Login / Registro / Perfil
+//  Almacenamiento local (localStorage).
+//  FUTURO: reemplazar con Firebase Auth / Supabase Auth
+//  para autenticación real con Google OAuth, JWT y backend.
+// ═══════════════════════════════════════════════════════════
+
+// ── Correos con acceso Premium ilimitado ──────────────────
+const VIP_EMAILS = [
+  'santycasasroncancio@gmail.com',
+  'camilanavarro0620@gmail.com',
+];
+window.VIP_EMAILS = VIP_EMAILS;
+function esVIP(email){ return VIP_EMAILS.includes((email||'').toLowerCase().trim()); }
+
+const AUTH = {
+  get user(){
+    if(window.FB_USER) return {
+      id: window.FB_USER.uid,
+      name: (window.FB_PROFILE&&window.FB_PROFILE.name)||window.FB_USER.displayName || window.FB_USER.email.split('@')[0],
+      email: window.FB_USER.email,
+      avatar: ((window.FB_PROFILE&&window.FB_PROFILE.name)||window.FB_USER.displayName || 'U').charAt(0).toUpperCase(),
+      isPremium: esVIP(window.FB_USER.email)
+    };
+    return null;
+  },
+  save(u){}, // Firebase maneja el estado
+  logout(){ if(typeof doLogout === 'function') doLogout(); },
+  get isLoggedIn(){ return !!window.FB_USER; },
+  get isVIP(){ return esVIP((window.FB_USER&&window.FB_USER.email)); },
+  updateTabIcon(){
+    const btn = document.getElementById('tab-account-btn');
+    if(!btn) return;
+    const u = this.user;
+    if(u){
+      const ic = btn.querySelector('.tb-ic');
+      const lb = btn.querySelector('.tb-lbl');
+      if(ic) ic.textContent = u.avatar;
+      if(lb) lb.textContent = u.name.split(' ')[0];
+      btn.style.color = 'var(--em)';
+    } else {
+      const ic = btn.querySelector('.tb-ic');
+      const lb = btn.querySelector('.tb-lbl');
+      if(ic) ic.textContent = '👤';
+      if(lb) lb.textContent = 'Cuenta';
+      btn.style.color = '';
+    }
+  }
+};
+
+// ── Auth: vista activa ─────────────────────────────────────
+function showView(name){
+  document.querySelectorAll('.acc-view').forEach(v=>v.style.display='none');
+  document.getElementById('view-'+name).style.display='flex';
+}
+
+// ── Auth: toggle contraseña ────────────────────────────────
+function togglePass(inputId, btn){
+  const inp = document.getElementById(inputId);
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.textContent = show ? '🙈' : '👁';
+}
+
+function validEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+// doLogin, doRegister, doGoogleLogin, doLogout → manejados por Firebase (ver módulo al final del body)
+
+// ── Stats: actualizar contadores ───────────────────────────
+function updateStats(userId, type){
+  const key = `mm_stats_${userId}`;
+  const stats = JSON.parse(localStorage.getItem(key)||'{"analysis":0,"chats":0,"firstDay":""}');
+  if(type==='chat')     stats.chats++;
+  if(type==='analysis') stats.analysis++;
+  if(!stats.firstDay)   stats.firstDay = new Date().toISOString();
+  localStorage.setItem(key, JSON.stringify(stats));
+}
+
+// ── Perfil: renderizar datos ───────────────────────────────
+async function renderProfile(){
+  const u = AUTH.user;
+  if(!u) return;
+
+  document.getElementById('profAvatar').textContent = u.avatar || u.name.charAt(0);
+  document.getElementById('profName').textContent   = u.name;
+  document.getElementById('profEmail').textContent  = u.email;
+
+  const badge = document.getElementById('profBadge');
+  const isVip = AUTH.isVIP;
+  badge.textContent = isVip ? '⭐ VIP' : u.isPremium ? '💎 Premium' : 'Versión gratuita';
+  badge.className   = 'prof-badge' + (isVip || u.isPremium ? ' premium' : '');
+
+  // Cargar historial desde Firebase
+  const histEl  = document.getElementById('histList');
+  const emptyEl = document.getElementById('histEmpty');
+  const aListEl = document.getElementById('analysisList');
+  const aEmptyEl= document.getElementById('analysisEmpty');
+
+  // Reset stats
+  document.getElementById('statAnalysis').textContent = '...';
+  document.getElementById('statChats').textContent    = '...';
+  document.getElementById('statDays').textContent     = '1';
+
+  try{
+    // Chats desde Firebase
+    const chats = window.loadChatHistory ? await window.loadChatHistory() : [];
+    document.getElementById('statChats').textContent = chats.length;
+
+    if(chats.length === 0){
+      emptyEl.style.display='flex';
+    } else {
+      emptyEl.style.display='none';
+      histEl.querySelectorAll('.hist-item').forEach(el=>el.remove());
+      chats.forEach(c=>{
+        const d=document.createElement('div');
+        d.className='hist-item';
+        const modeLabel = {normal:'Normal',estudiante:'Estudiante',profesional:'Profesional'}[c.mode]||'Normal';
+        const ts = c.ts&&c.ts.toDate ? c.ts.toDate() : new Date(c.ts||Date.now());
+        d.innerHTML=`
+          <div class="hist-item-top">
+            <div class="hist-item-txt">💬 ${esc(c.userMsg||'')}</div>
+            <div class="hist-item-time">${fmtTime(ts.toISOString())}</div>
+          </div>
+          <div class="hist-item-preview">${esc((c.aiReply||'').slice(0,100))}…
+            <span style="color:var(--em);font-size:0.68rem;margin-left:6px">${modeLabel}</span>
+          </div>`;
+        d.onclick=()=>{
+          document.getElementById('cTa').value=c.userMsg||'';
+          document.getElementById('sBtn').disabled=false;
+          goTab('chat',document.querySelectorAll('.tab-btn')[1]);
+        };
+        histEl.appendChild(d);
+      });
+    }
+
+    // Análisis desde Firebase
+    const analyses = window.loadAnalysisHistory ? await window.loadAnalysisHistory() : [];
+    document.getElementById('statAnalysis').textContent = analyses.length;
+
+    if(analyses.length === 0){
+      aEmptyEl.style.display='flex';
+    } else {
+      aEmptyEl.style.display='none';
+      aListEl.querySelectorAll('.hist-item').forEach(el=>el.remove());
+      analyses.forEach(a=>{
+        const riskColor = {low:'var(--em)',medium:'var(--amb)',high:'var(--red)'}[a.risk]||'var(--t2)';
+        const riskLbl   = {low:'Bajo',medium:'Moderado',high:'Alto'}[a.risk]||'—';
+        const ts = a.ts&&a.ts.toDate ? a.ts.toDate() : new Date(a.ts||Date.now());
+        const d=document.createElement('div');
+        d.className='hist-item';
+        d.innerHTML=`
+          <div class="hist-item-top">
+            <div class="hist-item-txt">🔬 ${esc(a.condition||'')}</div>
+            <div class="hist-item-time">${fmtTime(ts.toISOString())}</div>
+          </div>
+          <div class="hist-item-preview" style="color:${riskColor}">Riesgo ${riskLbl}</div>`;
+        aListEl.appendChild(d);
+      });
+    }
+
+    // Días activo
+    if(chats.length > 0){
+      const oldest = chats[chats.length-1];
+      const oldTs = oldest.ts&&oldest.ts.toDate ? oldest.ts.toDate() : new Date();
+      const days = Math.max(1, Math.ceil((Date.now()-oldTs.getTime())/86400000));
+      document.getElementById('statDays').textContent = days;
+    }
+
+  } catch(e){
+    console.warn('Error cargando historial:', e);
+    emptyEl.style.display='flex';
+    aEmptyEl.style.display='flex';
+  }
+}
+
+// ── Limpiar historial ──────────────────────────────────────
+function clearHistory(){
+  const u = AUTH.user;
+  if(!u) return;
+  if(!confirm('¿Borrar todo el historial de chats?')) return;
+  localStorage.removeItem(`mm_chats_${u.id}`);
+  renderProfile();
+  toast('Historial borrado.');
+}
+
+// ── Formato de tiempo ──────────────────────────────────────
+function fmtTime(iso){
+  try{
+    const d=new Date(iso);
+    const now=new Date();
+    const diff=now-d;
+    if(diff<60000)       return 'ahora';
+    if(diff<3600000)     return Math.floor(diff/60000)+'m';
+    if(diff<86400000)    return Math.floor(diff/3600000)+'h';
+    return d.toLocaleDateString('es',{day:'2-digit',month:'short'});
+  }catch{return ''}
+}
+
+// ── goTab: añadir manejo de cuenta ────────────────────────
+// (ya definida arriba; extendemos con account)
+
+// ── Inicializar auth al cargar ─────────────────────────────
+(function initAuth(){
+  AUTH.updateTabIcon();
+  // El screen-account se inicializa mostrando login o perfil
+  const screenAcc = document.getElementById('screen-account');
+  if(AUTH.isLoggedIn){
+    showView('profile');
+    // renderProfile se llama cuando se abre el tab
+  } else {
+    showView('login');
+  }
+})();
+
+// ── Utils ──────────────────────────────────────────────────
+function fmt(t){
+  if(!t) return '';
+  var s = t
+    // Escapar HTML
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    // Headers ### ## #
+    .replace(/^###\s+(.+)$/gm,'<div class="md-h3">$1</div>')
+    .replace(/^##\s+(.+)$/gm,'<div class="md-h2">$1</div>')
+    .replace(/^#\s+(.+)$/gm,'<div class="md-h1">$1</div>')
+    // Negrita e itálica
+    .replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    // Tablas markdown — convertir a texto limpio
+    .replace(/^\|(.+)\|$/gm, function(line){
+      if(/^[\|\-\s:]+$/.test(line)) return ''; // línea separadora
+      var cells = line.replace(/^\||\|$/g,'').split('|').map(function(c){ return c.trim(); });
+      return '<div class="md-row">'+cells.map(function(c){ return '<span>'+c+'</span>'; }).join('')+'</div>';
+    })
+    // Listas con guión o bullet
+    .replace(/^[-•—]\s+\[[ x]\]\s+(.+)$/gm,'<div class="md-check">☐ $1</div>')
+    .replace(/^[-•—]\s+(.+)$/gm,'<div class="md-li">$1</div>')
+    // Listas numeradas
+    .replace(/^(\d+)\.\s+(.+)$/gm,'<div class="md-li"><span class="md-num">$1.</span> $2</div>')
+    // Saltos de línea
+    .replace(/\n\n+/g,'<br><br>')
+    .replace(/\n/g,'<br>');
+  return s;
+}
+function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function setLoad(v){S.busy=v;document.getElementById('loader').classList.toggle('on',v)}
+var _tt;
+function toast(msg){
+  window.toast = toast;
+  window.showView = showView;
+  window.renderProfile = renderProfile;
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('on');
+  clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('on'),3200);
+}
+</script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .then(()=> console.log('SW registrado'))
+      .catch(e => console.log('SW error:', e));
+  });
+}
+</script>
+<!-- Firebase SDK compat — funciona en todos los navegadores -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+  var firebaseConfig = {
+    apiKey: "AIzaSyCivv5MQoWnbVI5m6tkxXD11cfIzHbZgBI",
+    authDomain: "medimind-a9d30.firebaseapp.com",
+    projectId: "medimind-a9d30",
+    storageBucket: "medimind-a9d30.firebasestorage.app",
+    messagingSenderId: "1088233949616",
+    appId: "1:1088233949616:web:74e90394468ff48a00ee75"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  var auth = firebase.auth();
+  var db   = firebase.firestore();
+
+  // Escuchar cambios de sesión
+  auth.onAuthStateChanged(function(user){
+    if(user){
+      window.FB_USER = user;
+      db.doc('users/'+user.uid).get().then(function(snap){
+        if(!snap.exists){
+          db.doc('users/'+user.uid).set({
+            name: user.displayName || user.email.split('@')[0],
+            email: user.email,
+            photoURL: user.photoURL||'',
+            isPremium: window.VIP_EMAILS ? window.VIP_EMAILS.indexOf(user.email.toLowerCase())>-1 : false,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          window.FB_PROFILE = {name: user.displayName||user.email.split('@')[0], email:user.email};
+        } else {
+          window.FB_PROFILE = snap.data();
+        }
+        if(typeof window.renderProfile==='function'){ window.renderProfile(); if(typeof window.showView==='function') window.showView('profile'); }
+        if(typeof AUTH!=='undefined') AUTH.updateTabIcon();
+        if(typeof PREM!=='undefined') PREM.updateFreeStatus();
+        var nombre = ((window.FB_PROFILE&&window.FB_PROFILE.name)||user.displayName||'amigo').split(' ')[0];
+        setTimeout(function(){ if(typeof toast==='function') toast('¡Hola, '+nombre+'! 👋'); }, 600);
+      });
+    } else {
+      window.FB_USER = null;
+      window.FB_PROFILE = null;
+      if(typeof AUTH!=='undefined') AUTH.updateTabIcon();
+    }
+  });
+
+  // Login con email
+  window.doLogin = function(){
+    var email = document.getElementById('loginEmail').value.trim();
+    var pass  = document.getElementById('loginPass').value;
+    var errEl = document.getElementById('loginErr');
+    errEl.textContent='';
+    var btn = document.getElementById('loginBtn');
+    btn.textContent='Entrando...'; btn.disabled=true;
+    auth.signInWithEmailAndPassword(email, pass).then(function(){
+      track('user_login',{method:'email'});
+    }).catch(function(e){
+      errEl.textContent = e.code==='auth/invalid-credential'||e.code==='auth/wrong-password' ? 'Correo o contraseña incorrectos.' : 'Error al iniciar sesión.';
+      btn.textContent='Iniciar sesión'; btn.disabled=false;
+    });
+  };
+
+  // Registro con email
+  window.doRegister = function(){
+    var name  = document.getElementById('regName').value.trim();
+    var email = document.getElementById('regEmail').value.trim();
+    var pass  = document.getElementById('regPass').value;
+    var errEl = document.getElementById('regErr');
+    errEl.textContent='';
+    if(!name){ errEl.textContent='Ingresa tu nombre.'; return; }
+    if(!email){ errEl.textContent='Ingresa tu correo.'; return; }
+    if(pass.length<6){ errEl.textContent='Contraseña mínimo 6 caracteres.'; return; }
+    var btn = document.getElementById('regBtn');
+    btn.textContent='Creando cuenta...'; btn.disabled=true;
+    auth.createUserWithEmailAndPassword(email, pass).then(function(cred){
+      return cred.user.updateProfile({displayName:name}).then(function(){
+        return db.doc('users/'+cred.user.uid).set({
+          name:name, email:email,
+          isPremium: window.VIP_EMAILS ? window.VIP_EMAILS.indexOf(email.toLowerCase())>-1 : false,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      });
+    }).then(function(){
+      track('user_register',{method:'email'});
+    }).catch(function(e){
+      errEl.textContent = e.code==='auth/email-already-in-use' ? 'Este correo ya tiene cuenta.' : 'Error al crear cuenta.';
+      btn.textContent='Crear cuenta gratis'; btn.disabled=false;
+    });
+  };
+
+  // Login con Google
+  window.doGoogleLogin = function(){
+    var provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).then(function(){
+      track('user_login',{method:'google'});
+    }).catch(function(e){
+      if(e.code!=='auth/popup-closed-by-user')
+        if(typeof toast==='function') toast('⚠️ Error con Google. Intenta con correo.');
+    });
+  };
+
+  // Logout
+  window.doLogout = function(){
+    auth.signOut().then(function(){
+      window.FB_USER=null; window.FB_PROFILE=null;
+      S.hist=[]; S.chatStarted=false;
+      document.getElementById('cMsgs').innerHTML='<div class="empty-st"><div class="empty-ic">🩺</div><div class="empty-ttl">Dr. MediMind™ listo</div><div class="empty-sub">Cuéntame tus síntomas.</div></div>';
+      if(typeof toast==='function') toast('Sesión cerrada.');
+      if(typeof window.showView==='function') window.showView('login');
+      track('user_logout',{});
+    });
+  };
+
+  // Guardar chat
+  window.saveChat = function(userMsg, aiReply){
+    if(!window.FB_USER) return;
+    var mode = typeof getMode==='function' ? getMode() : 'normal';
+    db.collection('users').doc(window.FB_USER.uid).collection('chats').add({
+      userMsg:(userMsg||'').slice(0,200),
+      aiReply:(aiReply||'').slice(0,500),
+      mode:mode,
+      ts:firebase.firestore.FieldValue.serverTimestamp()
+    }).catch(function(e){ console.warn('saveChat:',e); });
+  };
+
+  // Guardar análisis
+  window.saveAnalysis = function(condition, risk){
+    if(!window.FB_USER) return;
+    db.collection('users').doc(window.FB_USER.uid).collection('analyses').add({
+      condition:(condition||'').slice(0,100),
+      risk:risk,
+      ts:firebase.firestore.FieldValue.serverTimestamp()
+    }).catch(function(e){ console.warn('saveAnalysis:',e); });
+  };
+
+  // Cargar historial chats
+  window.loadChatHistory = function(){
+    if(!window.FB_USER) return Promise.resolve([]);
+    return db.collection('users').doc(window.FB_USER.uid).collection('chats')
+      .orderBy('ts','desc').limit(50).get()
+      .then(function(snap){ return snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); }); })
+      .catch(function(){ return []; });
+  };
+
+  // Cargar historial análisis
+  window.loadAnalysisHistory = function(){
+    if(!window.FB_USER) return Promise.resolve([]);
+    return db.collection('users').doc(window.FB_USER.uid).collection('analyses')
+      .orderBy('ts','desc').limit(50).get()
+      .then(function(snap){ return snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); }); })
+      .catch(function(){ return []; });
+  };
+
+  console.log('🔥 Firebase MediMind™ activo');
+})();
+</script>
+</body>
+</html>
